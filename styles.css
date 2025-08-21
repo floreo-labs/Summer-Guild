@@ -19,7 +19,7 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 40px; /* Increased from 20px to 40px */
 }
 
 /* Header */
@@ -633,6 +633,10 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 30px; /* Adjusted for mobile */
+    }
+    
     .nav {
         display: none;
     }
@@ -692,7 +696,7 @@ body {
 
 @media (max-width: 480px) {
     .container {
-        padding: 0 15px;
+        padding: 0 20px; /* Minimum padding for very small screens */
     }
     
     .hero {
