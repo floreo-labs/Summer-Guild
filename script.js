@@ -4,6 +4,108 @@ const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('.nav a');
 const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
 
+// draggable circles rationale
+
+const bg = document.querySelector('.draggable-bg');
+let isDragging = false;
+let hasBeenDragged = false;
+let startX, startY;
+let currentX = 0, currentY = 0;
+let velocityX = 0, velocityY = 0;
+let lastX = 0, lastY = 0;
+let animationId = null;
+
+// Initialize position
+bg.style.left = '50px';
+bg.style.top = '50px';
+
+bg.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  hasBeenDragged = true;
+  bg.classList.add('dragging');
+  
+  // Cancel any ongoing animation
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+    animationId = null;
+  }
+  
+  // Get current position
+  const rect = bg.getBoundingClientRect();
+  currentX = rect.left;
+  currentY = rect.top;
+  
+  startX = e.clientX - currentX;
+  startY = e.clientY - currentY;
+  lastX = e.clientX;
+  lastY = e.clientY;
+  
+  e.preventDefault();
+});
+
+document.addEventListener('mouseup', () => {
+  if (isDragging) {
+    isDragging = false;
+    bg.classList.remove('dragging');
+    
+    // If the image has been dragged, permanently stop levitation
+    if (hasBeenDragged) {
+      bg.classList.add('no-levitate');
+    }
+    
+    // Start gentle floating animation
+    animateToStop();
+  }
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  e.preventDefault();
+
+  // Calculate velocity for smooth deceleration
+  velocityX = e.clientX - lastX;
+  velocityY = e.clientY - lastY;
+  lastX = e.clientX;
+  lastY = e.clientY;
+
+  currentX = e.clientX - startX;
+  currentY = e.clientY - startY;
+
+  // Apply smooth movement
+  bg.style.left = `${currentX}px`;
+  bg.style.top = `${currentY}px`;
+});
+
+function animateToStop() {
+  const friction = 0.98; // Very gentle friction for slow deceleration
+  
+  function animate() {
+    if (Math.abs(velocityX) < 0.01 && Math.abs(velocityY) < 0.01) {
+      return; // Stop animation when velocity is very low
+    }
+    
+    velocityX *= friction;
+    velocityY *= friction;
+    
+    currentX += velocityX;
+    currentY += velocityY;
+    
+    bg.style.left = `${currentX}px`;
+    bg.style.top = `${currentY}px`;
+    
+    animationId = requestAnimationFrame(animate);
+  }
+  
+  animate();
+}
+
+// Prevent context menu on right click
+bg.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+});
+
+// dcr end
+
 // Header Scroll Effect
 function handleScroll() {
     const scrollPosition = window.scrollY;
