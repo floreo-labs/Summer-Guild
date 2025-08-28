@@ -30,12 +30,9 @@ body, html {
     }
 }
 
-.geometric-shapes {
+.draggable-bg {
     overflow: hidden;
     cursor: grab;
-}
-
-.draggable-bg {
     position: absolute;
     top: 150px;  /* Vertical position */
     left: 200px; /* Horizontal position */
