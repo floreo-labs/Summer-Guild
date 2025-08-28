@@ -16,6 +16,46 @@ body {
     background-color: #ffffff;
 }
 
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    cursor: grab;
+}
+
+@keyframes levitate {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.draggable-bg {
+    position: absolute;
+    top: 150px;  /* Vertical position */
+    left: 200px; /* Horizontal position */
+    width: 200px;
+    height: auto;
+    user-select: none;
+    cursor: grab;
+    transition: none;
+    z-index: 1000;
+    animation: levitate 2s ease-in-out infinite;
+}
+
+.draggable-bg.dragging {
+    cursor: grabbing;
+    transform: scale(1.05);
+    transition: transform 0.1s ease;
+    animation: none;
+}
+
+.draggable-bg.no-levitate {
+    animation: none;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
