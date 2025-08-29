@@ -21,6 +21,13 @@ body, html {
     margin: 0;
 }
 
+#navbar-mark {
+    height: 40px;
+    width: auto;
+    display: block;
+    margin-top: 5px;
+}
+
 @keyframes levitate {
     0%, 100% {
         transform: translateY(0px);
