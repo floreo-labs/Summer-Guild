@@ -4,62 +4,75 @@ const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('.nav a');
 const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
 
-// draggable circles rationale
+// Draggable circles functionality for multiple elements
 
-const bg = document.querySelector('.draggable-bg');
+const draggableElements = document.querySelectorAll('.draggable-bg');
 let isDragging = false;
-let hasBeenDragged = false;
+let currentDraggedElement = null;
+let hasBeenDragged = new Set();
 let startX, startY;
 let currentX = 0, currentY = 0;
 let velocityX = 0, velocityY = 0;
 let lastX = 0, lastY = 0;
 let animationId = null;
 
-// Initialize position
-bg.style.left = '50px';
-bg.style.top = '50px';
+// Initialize draggable functionality for all elements
+draggableElements.forEach(element => {
+  element.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    currentDraggedElement = element;
+    hasBeenDragged.add(element);
+    element.classList.add('dragging');
+    element.classList.remove('smooth-levitate'); // Remove smooth levitation when starting to drag
+    
+    // Cancel any ongoing animation
+    if (animationId) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+    
+    // Get current position relative to the container
+    const container = document.querySelector('.circles-container');
+    const containerRect = container.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+    
+    // Calculate current position relative to container
+    currentX = elementRect.left - containerRect.left;
+    currentY = elementRect.top - containerRect.top;
+    
+    // Calculate mouse offset from element
+    startX = e.clientX - elementRect.left;
+    startY = e.clientY - elementRect.top;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    
+    e.preventDefault();
+  });
 
-bg.addEventListener('mousedown', (e) => {
-  isDragging = true;
-  hasBeenDragged = true;
-  bg.classList.add('dragging');
-  
-  // Cancel any ongoing animation
-  if (animationId) {
-    cancelAnimationFrame(animationId);
-    animationId = null;
-  }
-  
-  // Get current position
-  const rect = bg.getBoundingClientRect();
-  currentX = rect.left;
-  currentY = rect.top;
-  
-  startX = e.clientX - currentX;
-  startY = e.clientY - currentY;
-  lastX = e.clientX;
-  lastY = e.clientY;
-  
-  e.preventDefault();
+  // Prevent context menu on right click
+  element.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
 });
 
 document.addEventListener('mouseup', () => {
-  if (isDragging) {
+  if (isDragging && currentDraggedElement) {
     isDragging = false;
-    bg.classList.remove('dragging');
+    currentDraggedElement.classList.remove('dragging');
     
-    // If the image has been dragged, permanently stop levitation
-    if (hasBeenDragged) {
-      bg.classList.add('no-levitate');
+    // If the element has been dragged, permanently stop levitation
+    if (hasBeenDragged.has(currentDraggedElement)) {
+      currentDraggedElement.classList.add('no-levitate');
     }
     
     // Start gentle floating animation
     animateToStop();
+    currentDraggedElement = null;
   }
 });
 
 document.addEventListener('mousemove', (e) => {
-  if (!isDragging) return;
+  if (!isDragging || !currentDraggedElement) return;
   e.preventDefault();
 
   // Calculate velocity for smooth deceleration
@@ -68,19 +81,29 @@ document.addEventListener('mousemove', (e) => {
   lastX = e.clientX;
   lastY = e.clientY;
 
-  currentX = e.clientX - startX;
-  currentY = e.clientY - startY;
+  // Get container position for relative positioning
+  const container = document.querySelector('.circles-container');
+  const containerRect = container.getBoundingClientRect();
+  
+  // Calculate new position relative to container
+  currentX = e.clientX - containerRect.left - startX;
+  currentY = e.clientY - containerRect.top - startY;
 
   // Apply smooth movement
-  bg.style.left = `${currentX}px`;
-  bg.style.top = `${currentY}px`;
+  currentDraggedElement.style.left = `${currentX}px`;
+  currentDraggedElement.style.top = `${currentY}px`;
 });
 
 function animateToStop() {
-  const friction = 0.98; // Very gentle friction for slow deceleration
+  const friction = 0.97; // Smoother friction to prevent glitching
+  const element = currentDraggedElement; // Store reference before it becomes null
   
   function animate() {
-    if (Math.abs(velocityX) < 0.01 && Math.abs(velocityY) < 0.01) {
+    if (Math.abs(velocityX) < 0.005 && Math.abs(velocityY) < 0.005) {
+      // Animation complete - immediately resume original levitation for ALL circles
+      if (element) {
+        element.classList.remove('no-levitate');
+      }
       return; // Stop animation when velocity is very low
     }
     
@@ -90,21 +113,16 @@ function animateToStop() {
     currentX += velocityX;
     currentY += velocityY;
     
-    bg.style.left = `${currentX}px`;
-    bg.style.top = `${currentY}px`;
+    if (element) {
+      element.style.left = `${currentX}px`;
+      element.style.top = `${currentY}px`;
+    }
     
     animationId = requestAnimationFrame(animate);
   }
   
   animate();
 }
-
-// Prevent context menu on right click
-bg.addEventListener('contextmenu', (e) => {
-  e.preventDefault();
-});
-
-// dcr end
 
 // Header Scroll Effect
 function handleScroll() {
