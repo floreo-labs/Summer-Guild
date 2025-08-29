@@ -21,6 +21,16 @@ body, html {
     margin: 0;
 }
 
+.btn-primary:active,
+.btn-primary:focus {
+  outline: none;
+  box-shadow: 0 8px 25px rgba(51, 102, 255, 0.3); /* keeps same shadow as hover */
+  background: #2952CC; /* matches hover background */
+  border-radius: 50px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
 #navbar-mark {
     height: 40px;
     width: auto;
