@@ -215,11 +215,13 @@ body, html {
     height: 5px;
     width: auto;
     display: block;
+    object-fit: contain;
 }
 
 .nav {
     display: flex;
     gap: 2rem;
+    align-items: center;
 }
 
 .nav a {
