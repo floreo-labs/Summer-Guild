@@ -551,7 +551,7 @@ body, html {
 
 .instructors-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
 }
 
@@ -749,6 +749,32 @@ body, html {
     color: #FFFFFF;
     font-size: 11px;
     margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .instructors-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .instructors-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+    }
+    
+    .instructor-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .instructors-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
 }
 
 /* Bottom section - Socials and Navigation */
