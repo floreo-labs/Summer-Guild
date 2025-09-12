@@ -466,7 +466,46 @@ body, html {
     font-weight: 500;
 }
 
-/* Classes Section */
+/* Hackathon Project Section */
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.carousel-item {
+  flex: 0 0 auto;
+  width: 300px; /* Change based on design */
+  scroll-snap-align: center;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s;
+}
+
+.carousel-item:hover, .carousel-item:focus {
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+}
+
+.carousel {
+  scroll-behavior: smooth;
+}
+
+.carousel-item img, .carousel-item video {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  transition: filter 0.6s;
+}
+
+.carousel-item:hover img, .carousel-item:hover video {
+  filter: brightness(1.1) drop-shadow(0 0 10px #ffc);
+}
+
+
 .classes {
     padding: 80px 0;
 }
