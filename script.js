@@ -4,6 +4,128 @@ const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('.nav a');
 const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
 
+
+// Video Section Beginning
+
+/ Play video function - Fixed to prevent AbortError
+        function playVideo(container) {
+            const iframe = container.querySelector('iframe');
+            const video = container.querySelector('video');
+            const errorMsg = container.querySelector('.error-message');
+            
+            // Stop all other videos/iframes first WITHOUT calling pause() 
+            document.querySelectorAll('.video-container.playing').forEach(otherContainer => {
+                if (otherContainer !== container) {
+                    const otherIframe = otherContainer.querySelector('iframe');
+                    const otherVideo = otherContainer.querySelector('video');
+                    
+                    // For iframes, reset src to stop playback
+                    if (otherIframe && otherIframe.src.includes('drive.google.com')) {
+                        const src = otherIframe.src;
+                        otherIframe.src = 'about:blank';  // Stop iframe without pause()
+                        setTimeout(() => otherIframe.src = src, 50);
+                    }
+                    
+                    // For videos, reset src instead of pause() to avoid AbortError
+                    if (otherVideo && !otherVideo.paused) {
+                        const videoSrc = otherVideo.querySelector('source')?.src;
+                        otherVideo.src = '';
+                        otherVideo.load(); // Reset video element
+                        if (videoSrc) {
+                            setTimeout(() => {
+                                otherVideo.src = videoSrc;
+                                otherVideo.load();
+                            }, 50);
+                        }
+                    }
+                    
+                    otherContainer.classList.remove('playing');
+                }
+            });
+            
+            // Small delay to ensure other videos are stopped
+            setTimeout(() => {
+                // Show video/iframe and hide poster
+                container.classList.add('playing');
+                
+                // Try iframe first (better for Google Drive)
+                if (iframe && iframe.src.includes('drive.google.com')) {
+                    console.log('Loading Google Drive video via iframe');
+                } else if (video) {
+                    // Fallback to direct video - but avoid immediate play after pause
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.log('Video playback failed:', error.name);
+                            if (error.name !== 'AbortError') { // Don't show error for AbortError
+                                errorMsg.style.display = 'block';
+                                setTimeout(() => {
+                                    errorMsg.style.display = 'none';
+                                    container.classList.remove('playing');
+                                }, 2000);
+                            }
+                        });
+                    }
+                    
+                    // Handle video ended
+                    video.addEventListener('ended', () => {
+                        container.classList.remove('playing');
+                    }, { once: true });
+                }
+            }, 100);
+        }
+
+        // Infinite scroll carousel logic
+        const carousel = document.getElementById('videoCarousel');
+        const cardWidth = 370; // Card width + gap
+        let isScrolling = false;
+        
+        // Initialize carousel position - start at the first "real" card (index 1)
+        carousel.scrollLeft = cardWidth;
+        
+        function handleInfiniteScroll() {
+            if (isScrolling) return;
+            
+            const scrollLeft = carousel.scrollLeft;
+            const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+            
+            // If scrolled to the very beginning (showing the duplicate last card)
+            if (scrollLeft <= 0) {
+                isScrolling = true;
+                // Jump to the real last card position (without animation)
+                carousel.style.scrollBehavior = 'auto';
+                carousel.scrollLeft = maxScrollLeft - cardWidth;
+                setTimeout(() => {
+                    carousel.style.scrollBehavior = 'smooth';
+                    isScrolling = false;
+                }, 50);
+            }
+            // If scrolled to the very end (showing the duplicate first card)
+            else if (scrollLeft >= maxScrollLeft) {
+                isScrolling = true;
+                // Jump to the real first card position (without animation)
+                carousel.style.scrollBehavior = 'auto';
+                carousel.scrollLeft = cardWidth;
+                setTimeout(() => {
+                    carousel.style.scrollBehavior = 'smooth';
+                    isScrolling = false;
+                }, 50);
+            }
+        }
+        
+        // Listen for scroll events
+        carousel.addEventListener('scroll', handleInfiniteScroll);
+        
+        // Handle image loading errors gracefully
+        document.querySelectorAll('.video-poster').forEach(img => {
+            img.addEventListener('load', () => {
+                console.log('Poster image loaded:', img.src);
+            });
+        });
+
+// Video Section End
+
+
 // Draggable circles functionality for multiple elements
 
 const draggableElements = document.querySelectorAll('.draggable-bg');
