@@ -468,10 +468,35 @@ body, html {
 
 /* Hackathon Project Section */
 
-/* Classes Section - Fixed Carousel */
+        /* Classes Section - Fixed Video Implementation */
         .classes {
             padding: 80px 0;
             background: #f8f9ff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .carousel {
@@ -495,10 +520,6 @@ body, html {
         .carousel::-webkit-scrollbar-thumb {
             background: #3366FF;
             border-radius: 10px;
-        }
-
-        .carousel::-webkit-scrollbar-thumb:hover {
-            background: #2952CC;
         }
 
         .class-card {
@@ -531,6 +552,7 @@ body, html {
             height: 100%;
             object-fit: cover;
             transition: transform 0.3s ease, filter 0.3s ease;
+            display: block;
         }
 
         .video-container:hover .video-poster {
@@ -538,33 +560,19 @@ body, html {
             filter: brightness(1.1);
         }
 
-        /* Fallback for missing images */
-        .video-placeholder {
+        /* Video iframe styling */
+        .video-iframe {
             width: 100%;
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 500;
+            border: none;
+            display: none;
         }
 
-        .video-container video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease, filter 0.3s ease;
-            display: none; /* Hidden until play button is clicked */
-        }
-
-        .video-container.playing video {
+        .video-container.playing .video-iframe {
             display: block;
         }
 
-        .video-container.playing .video-poster,
-        .video-container.playing .video-placeholder {
+        .video-container.playing .video-poster {
             display: none;
         }
 
@@ -587,6 +595,7 @@ body, html {
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(10px);
+            z-index: 10;
         }
 
         .play-button:hover {
@@ -596,6 +605,21 @@ body, html {
 
         .video-container.playing .play-button {
             display: none;
+        }
+
+        /* Loading state */
+        .video-container.loading {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .video-container.loading::after {
+            content: 'Loading...';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: 500;
         }
 
         .class-info {
@@ -638,7 +662,7 @@ body, html {
             color: #4CAF50;
         }
 
-/* Error message styling */
+        /* Error message styling */
         .error-message {
             position: absolute;
             bottom: 10px;
@@ -650,24 +674,20 @@ body, html {
             border-radius: 20px;
             font-size: 0.8rem;
             display: none;
+            z-index: 15;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .class-card {
-                flex: 0 0 280px;
-            }
-            
-            .carousel {
-                gap: 1rem;
-                padding: 1rem 0;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .class-card {
-                flex: 0 0 250px;
-            }
+        /* Fallback placeholder */
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 500;
         }
 
 /* End of Hackathon Video Section */
