@@ -7,225 +7,110 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
 
 // Video Section Beginning
 
-// Make playVideo function globally accessible
-window.playVideo = function(container) {
-    const iframe = container.querySelector('iframe');
-    const video = container.querySelector('video');
-    const errorMsg = container.querySelector('.error-message');
-    
-    // Stop all other videos/iframes first WITHOUT calling pause() 
-    document.querySelectorAll('.video-container.playing').forEach(otherContainer => {
-        if (otherContainer !== container) {
-            const otherIframe = otherContainer.querySelector('iframe');
-            const otherVideo = otherContainer.querySelector('video');
-            
-            // For iframes, reset src to stop playback
-            if (otherIframe && otherIframe.src.includes('drive.google.com')) {
-                const src = otherIframe.src;
-                otherIframe.src = 'about:blank';
-                setTimeout(() => otherIframe.src = src, 50);
-            }
-            
-            // For videos, reset src instead of pause()
-            if (otherVideo && !otherVideo.paused) {
-                const videoSrc = otherVideo.querySelector('source')?.src;
-                otherVideo.src = '';
-                otherVideo.load();
-                if (videoSrc) {
-                    setTimeout(() => {
-                        otherVideo.src = videoSrc;
-                        otherVideo.load();
-                    }, 50);
-                }
-            }
-            
-            otherContainer.classList.remove('playing');
-        }
-    });
-    
-    // Small delay to ensure other videos are stopped
-    setTimeout(() => {
-        container.classList.add('playing');
-        
-        // Try iframe first (better for Google Drive)
-        if (iframe && iframe.src.includes('drive.google.com')) {
-            console.log('Loading Google Drive video via iframe');
-        } else if (video) {
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log('Video playback failed:', error.name);
-                    if (error.name !== 'AbortError') {
-                        errorMsg.style.display = 'block';
-                        setTimeout(() => {
-                            errorMsg.style.display = 'none';
-                            container.classList.remove('playing');
-                        }, 2000);
-                    }
-                });
-            }
-            
-            video.addEventListener('ended', () => {
-                container.classList.remove('playing');
-            }, { once: true });
-        }
-    }, 100);
-};
-
-// Initialize carousel after DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    const carousel = document.getElementById('videoCarousel');
-    if (!carousel) return;
-    
-    const cardWidth = 370;
-    let isScrolling = false;
-    
-    // Initialize carousel position
-    carousel.scrollLeft = cardWidth;
-    
-    function handleInfiniteScroll() {
-        if (isScrolling) return;
-        
-        const scrollLeft = carousel.scrollLeft;
-        const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
-        
-        if (scrollLeft <= 0) {
-            isScrolling = true;
-            carousel.style.scrollBehavior = 'auto';
-            carousel.scrollLeft = maxScrollLeft - cardWidth;
-            setTimeout(() => {
-                carousel.style.scrollBehavior = 'smooth';
-                isScrolling = false;
-            }, 50);
-        }
-        else if (scrollLeft >= maxScrollLeft) {
-            isScrolling = true;
-            carousel.style.scrollBehavior = 'auto';
-            carousel.scrollLeft = cardWidth;
-            setTimeout(() => {
-                carousel.style.scrollBehavior = 'smooth';
-                isScrolling = false;
-            }, 50);
-        }
-    }
-    
-    carousel.addEventListener('scroll', handleInfiniteScroll);
-});
-
-// Play video function - Fixed to prevent AbortError
+        // Single, clean playVideo function
         function playVideo(container) {
-            const iframe = container.querySelector('iframe');
-            const video = container.querySelector('video');
-            const errorMsg = container.querySelector('.error-message');
-            
-            // Stop all other videos/iframes first WITHOUT calling pause() 
+            // Get the video ID from data attribute
+            const videoId = container.getAttribute('data-video-id');
+            if (!videoId) {
+                showError(container, 'Video ID not found');
+                return;
+            }
+
+            // Stop all other videos first
             document.querySelectorAll('.video-container.playing').forEach(otherContainer => {
                 if (otherContainer !== container) {
-                    const otherIframe = otherContainer.querySelector('iframe');
-                    const otherVideo = otherContainer.querySelector('video');
-                    
-                    // For iframes, reset src to stop playback
-                    if (otherIframe && otherIframe.src.includes('drive.google.com')) {
-                        const src = otherIframe.src;
-                        otherIframe.src = 'about:blank';  // Stop iframe without pause()
-                        setTimeout(() => otherIframe.src = src, 50);
-                    }
-                    
-                    // For videos, reset src instead of pause() to avoid AbortError
-                    if (otherVideo && !otherVideo.paused) {
-                        const videoSrc = otherVideo.querySelector('source')?.src;
-                        otherVideo.src = '';
-                        otherVideo.load(); // Reset video element
-                        if (videoSrc) {
-                            setTimeout(() => {
-                                otherVideo.src = videoSrc;
-                                otherVideo.load();
-                            }, 50);
-                        }
-                    }
-                    
-                    otherContainer.classList.remove('playing');
+                    stopVideo(otherContainer);
                 }
             });
+
+            // Show loading state
+            container.classList.add('loading');
+
+            // Get iframe element
+            const iframe = container.querySelector('.video-iframe');
+            const errorMsg = container.querySelector('.error-message');
+
+            // Create the embed URL for Google Drive
+            const embedUrl = `https://drive.google.com/file/d/${videoId}/preview?usp=embed_facebook`;
+
+            // Set iframe source and show video
+            iframe.src = embedUrl;
             
-            // Small delay to ensure other videos are stopped
+            // Wait a moment for loading, then show video
             setTimeout(() => {
-                // Show video/iframe and hide poster
+                container.classList.remove('loading');
                 container.classList.add('playing');
                 
-                // Try iframe first (better for Google Drive)
-                if (iframe && iframe.src.includes('drive.google.com')) {
-                    console.log('Loading Google Drive video via iframe');
-                } else if (video) {
-                    // Fallback to direct video - but avoid immediate play after pause
-                    const playPromise = video.play();
-                    if (playPromise !== undefined) {
-                        playPromise.catch(error => {
-                            console.log('Video playback failed:', error.name);
-                            if (error.name !== 'AbortError') { // Don't show error for AbortError
-                                errorMsg.style.display = 'block';
-                                setTimeout(() => {
-                                    errorMsg.style.display = 'none';
-                                    container.classList.remove('playing');
-                                }, 2000);
-                            }
-                        });
-                    }
-                    
-                    // Handle video ended
-                    video.addEventListener('ended', () => {
-                        container.classList.remove('playing');
-                    }, { once: true });
+                // Hide error message if it was showing
+                errorMsg.style.display = 'none';
+            }, 1000);
+
+            // Handle iframe load errors (basic check)
+            iframe.onerror = () => {
+                showError(container, 'Failed to load video');
+            };
+
+            // Optional: Add a timeout to show error if iframe doesn't load
+            setTimeout(() => {
+                if (container.classList.contains('loading')) {
+                    showError(container, 'Video took too long to load');
                 }
-            }, 100);
+            }, 10000); // 10 second timeout
         }
 
-        // Infinite scroll carousel logic
-        const carousel = document.getElementById('videoCarousel');
-        const cardWidth = 370; // Card width + gap
-        let isScrolling = false;
-        
-        // Initialize carousel position - start at the first "real" card (index 1)
-        carousel.scrollLeft = cardWidth;
-        
-        function handleInfiniteScroll() {
-            if (isScrolling) return;
+        function stopVideo(container) {
+            const iframe = container.querySelector('.video-iframe');
             
-            const scrollLeft = carousel.scrollLeft;
-            const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+            // Stop video by clearing iframe src
+            iframe.src = '';
             
-            // If scrolled to the very beginning (showing the duplicate last card)
-            if (scrollLeft <= 0) {
-                isScrolling = true;
-                // Jump to the real last card position (without animation)
-                carousel.style.scrollBehavior = 'auto';
-                carousel.scrollLeft = maxScrollLeft - cardWidth;
-                setTimeout(() => {
-                    carousel.style.scrollBehavior = 'smooth';
-                    isScrolling = false;
-                }, 50);
-            }
-            // If scrolled to the very end (showing the duplicate first card)
-            else if (scrollLeft >= maxScrollLeft) {
-                isScrolling = true;
-                // Jump to the real first card position (without animation)
-                carousel.style.scrollBehavior = 'auto';
-                carousel.scrollLeft = cardWidth;
-                setTimeout(() => {
-                    carousel.style.scrollBehavior = 'smooth';
-                    isScrolling = false;
-                }, 50);
-            }
+            // Remove playing state
+            container.classList.remove('playing', 'loading');
         }
-        
-        // Listen for scroll events
-        carousel.addEventListener('scroll', handleInfiniteScroll);
-        
-        // Handle image loading errors gracefully
-        document.querySelectorAll('.video-poster').forEach(img => {
-            img.addEventListener('load', () => {
-                console.log('Poster image loaded:', img.src);
-            });
+
+        function showError(container, message) {
+            const errorMsg = container.querySelector('.error-message');
+            
+            container.classList.remove('loading', 'playing');
+            errorMsg.textContent = message;
+            errorMsg.style.display = 'block';
+            
+            // Hide error after 3 seconds
+            setTimeout(() => {
+                errorMsg.style.display = 'none';
+            }, 3000);
+        }
+
+        // Initialize carousel functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.getElementById('videoCarousel');
+            if (!carousel) return;
+            
+            // Add smooth scrolling
+            carousel.style.scrollBehavior = 'smooth';
+            
+            // Optional: Add arrow navigation
+            // You can add navigation arrows here if needed
+        });
+
+        // Handle clicks outside videos to stop playback
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.video-container')) {
+                // Clicked outside any video container
+                document.querySelectorAll('.video-container.playing').forEach(container => {
+                    // Don't stop videos when clicking on other UI elements
+                    // This is optional - remove if you want videos to keep playing
+                });
+            }
+        });
+
+        // Pause videos when page becomes hidden
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                document.querySelectorAll('.video-container.playing').forEach(container => {
+                    stopVideo(container);
+                });
+            }
         });
 
 // Video Section End
