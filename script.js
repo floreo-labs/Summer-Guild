@@ -7,7 +7,112 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
 
 // Video Section Beginning
 
-/ Play video function - Fixed to prevent AbortError
+// Make playVideo function globally accessible
+window.playVideo = function(container) {
+    const iframe = container.querySelector('iframe');
+    const video = container.querySelector('video');
+    const errorMsg = container.querySelector('.error-message');
+    
+    // Stop all other videos/iframes first WITHOUT calling pause() 
+    document.querySelectorAll('.video-container.playing').forEach(otherContainer => {
+        if (otherContainer !== container) {
+            const otherIframe = otherContainer.querySelector('iframe');
+            const otherVideo = otherContainer.querySelector('video');
+            
+            // For iframes, reset src to stop playback
+            if (otherIframe && otherIframe.src.includes('drive.google.com')) {
+                const src = otherIframe.src;
+                otherIframe.src = 'about:blank';
+                setTimeout(() => otherIframe.src = src, 50);
+            }
+            
+            // For videos, reset src instead of pause()
+            if (otherVideo && !otherVideo.paused) {
+                const videoSrc = otherVideo.querySelector('source')?.src;
+                otherVideo.src = '';
+                otherVideo.load();
+                if (videoSrc) {
+                    setTimeout(() => {
+                        otherVideo.src = videoSrc;
+                        otherVideo.load();
+                    }, 50);
+                }
+            }
+            
+            otherContainer.classList.remove('playing');
+        }
+    });
+    
+    // Small delay to ensure other videos are stopped
+    setTimeout(() => {
+        container.classList.add('playing');
+        
+        // Try iframe first (better for Google Drive)
+        if (iframe && iframe.src.includes('drive.google.com')) {
+            console.log('Loading Google Drive video via iframe');
+        } else if (video) {
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log('Video playback failed:', error.name);
+                    if (error.name !== 'AbortError') {
+                        errorMsg.style.display = 'block';
+                        setTimeout(() => {
+                            errorMsg.style.display = 'none';
+                            container.classList.remove('playing');
+                        }, 2000);
+                    }
+                });
+            }
+            
+            video.addEventListener('ended', () => {
+                container.classList.remove('playing');
+            }, { once: true });
+        }
+    }, 100);
+};
+
+// Initialize carousel after DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.getElementById('videoCarousel');
+    if (!carousel) return;
+    
+    const cardWidth = 370;
+    let isScrolling = false;
+    
+    // Initialize carousel position
+    carousel.scrollLeft = cardWidth;
+    
+    function handleInfiniteScroll() {
+        if (isScrolling) return;
+        
+        const scrollLeft = carousel.scrollLeft;
+        const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+        
+        if (scrollLeft <= 0) {
+            isScrolling = true;
+            carousel.style.scrollBehavior = 'auto';
+            carousel.scrollLeft = maxScrollLeft - cardWidth;
+            setTimeout(() => {
+                carousel.style.scrollBehavior = 'smooth';
+                isScrolling = false;
+            }, 50);
+        }
+        else if (scrollLeft >= maxScrollLeft) {
+            isScrolling = true;
+            carousel.style.scrollBehavior = 'auto';
+            carousel.scrollLeft = cardWidth;
+            setTimeout(() => {
+                carousel.style.scrollBehavior = 'smooth';
+                isScrolling = false;
+            }, 50);
+        }
+    }
+    
+    carousel.addEventListener('scroll', handleInfiniteScroll);
+});
+
+// Play video function - Fixed to prevent AbortError
         function playVideo(container) {
             const iframe = container.querySelector('iframe');
             const video = container.querySelector('video');
