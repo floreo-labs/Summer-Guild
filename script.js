@@ -115,6 +115,119 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
 
 // Video Section End
 
+// Draggable emoji functionality for student bricks
+const draggableEmojis = document.querySelectorAll('.brick-emoji');
+let isDraggingEmoji = false;
+let currentDraggedEmoji = null;
+let hasBeenDraggedEmoji = new Set();
+let emojiStartX, emojiStartY;
+let emojiCurrentX = 0, emojiCurrentY = 0;
+let emojiVelocityX = 0, emojiVelocityY = 0;
+let emojiLastX = 0, emojiLastY = 0;
+let emojiAnimationId = null;
+
+// Initialize draggable functionality for emojis
+draggableEmojis.forEach(emoji => {
+  emoji.addEventListener('mousedown', (e) => {
+    isDraggingEmoji = true;
+    currentDraggedEmoji = emoji;
+    hasBeenDraggedEmoji.add(emoji);
+    emoji.style.animation = 'none';
+    emoji.style.transform = 'scale(1.1)';
+    
+    // Cancel any ongoing animation
+    if (emojiAnimationId) {
+      cancelAnimationFrame(emojiAnimationId);
+      emojiAnimationId = null;
+    }
+    
+    // Get current position relative to the brick
+    const brick = emoji.closest('.student-brick');
+    const brickRect = brick.getBoundingClientRect();
+    const emojiRect = emoji.getBoundingClientRect();
+    
+    // Calculate current position relative to brick
+    emojiCurrentX = emojiRect.left - brickRect.left;
+    emojiCurrentY = emojiRect.top - brickRect.top;
+    
+    // Calculate mouse offset from emoji
+    emojiStartX = e.clientX - emojiRect.left;
+    emojiStartY = e.clientY - emojiRect.top;
+    emojiLastX = e.clientX;
+    emojiLastY = e.clientY;
+    
+    e.preventDefault();
+  });
+
+  // Prevent context menu on right click
+  emoji.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+});
+
+document.addEventListener('mouseup', () => {
+  if (isDraggingEmoji && currentDraggedEmoji) {
+    isDraggingEmoji = false;
+    currentDraggedEmoji.style.transform = 'scale(1)';
+    
+    // Start gentle floating animation
+    animateEmojiToStop();
+    currentDraggedEmoji = null;
+  }
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!isDraggingEmoji || !currentDraggedEmoji) return;
+  e.preventDefault();
+
+  // Calculate velocity for smooth deceleration
+  emojiVelocityX = e.clientX - emojiLastX;
+  emojiVelocityY = e.clientY - emojiLastY;
+  emojiLastX = e.clientX;
+  emojiLastY = e.clientY;
+
+  // Get brick position for relative positioning
+  const brick = currentDraggedEmoji.closest('.student-brick');
+  const brickRect = brick.getBoundingClientRect();
+  
+  // Calculate new position relative to brick
+  emojiCurrentX = e.clientX - brickRect.left - emojiStartX;
+  emojiCurrentY = e.clientY - brickRect.top - emojiStartY;
+
+  // Apply smooth movement
+  currentDraggedEmoji.style.left = `${emojiCurrentX}px`;
+  currentDraggedEmoji.style.top = `${emojiCurrentY}px`;
+});
+
+function animateEmojiToStop() {
+  const friction = 0.95; // Smooth friction for emojis
+  const emoji = currentDraggedEmoji; // Store reference before it becomes null
+  
+  function animate() {
+    if (Math.abs(emojiVelocityX) < 0.01 && Math.abs(emojiVelocityY) < 0.01) {
+      // Animation complete - resume gentle floating
+      if (emoji) {
+        emoji.style.animation = 'gentle-float 3s ease-in-out infinite';
+      }
+      return; // Stop animation when velocity is very low
+    }
+    
+    emojiVelocityX *= friction;
+    emojiVelocityY *= friction;
+    
+    emojiCurrentX += emojiVelocityX;
+    emojiCurrentY += emojiVelocityY;
+    
+    if (emoji) {
+      emoji.style.left = `${emojiCurrentX}px`;
+      emoji.style.top = `${emojiCurrentY}px`;
+    }
+    
+    emojiAnimationId = requestAnimationFrame(animate);
+  }
+  
+  animate();
+}
 
 // Draggable circles functionality for multiple elements
 
