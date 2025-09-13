@@ -769,58 +769,204 @@ body, html {
     font-weight: 500;
 }
 
-/* Students Section */
+/* Students Section - Brick Layout */
 .students {
     padding: 80px 0;
+    background: #f8f9ff;
 }
 
-.students-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+.students-brick-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-.student-card {
+.student-brick {
+    position: relative;
     background: white;
     border-radius: 20px;
-    padding: 2rem;
+    padding: 2.5rem 3rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
+    width: 70%;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
 }
 
-.student-card:hover {
+.student-brick:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
-.student-avatar {
-    margin-bottom: 1.5rem;
+/* Brick positioning */
+.brick-left {
+    align-self: flex-start;
+    margin-right: auto;
 }
 
-.student-quote blockquote {
+.brick-right {
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+/* Brick content styling */
+.brick-content {
+    flex: 1;
+    padding-right: 2rem;
+}
+
+blockquote {
+    padding-left: 15px;
+}
+
+.right-aligned-bq {
+    text-align: right;
+    padding-right: 17px;
+}
+
+.brick-content blockquote {
     font-style: italic;
     color: #555;
     line-height: 1.6;
-    margin-bottom: 1.5rem;
     font-size: 1.1rem;
+    margin: 0;
+    position: relative;
 }
 
-.student-quote cite {
-    display: block;
-    text-align: center;
+.brick-content blockquote::before {
+    content: '"';
+    font-size: 3rem;
+    color: #3366FF;
+    position: absolute;
+    top: -10px;
+    left: -20px;
+    font-family: serif;
+    opacity: 0.3;
 }
 
-.student-quote cite strong {
-    color: #1a1a1a;
-    font-weight: 600;
-    display: block;
-    margin-bottom: 0.3rem;
+.brick-content blockquote::after {
+    content: '"';
+    font-size: 3rem;
+    color: #3366FF;
+    position: absolute;
+    bottom: -30px;
+    right: -10px;
+    font-family: serif;
+    opacity: 0.3;
 }
 
-.student-quote cite span {
-    color: #666;
-    font-size: 0.9rem;
+/* Draggable emoji styling */
+.brick-emoji {
+    position: absolute;
+    font-size: 2.5rem;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.3s ease;
+    z-index: 10;
+    animation: gentle-float 3s ease-in-out infinite;
+}
+
+.brick-emoji:hover {
+    transform: scale(1.2);
+    animation-play-state: paused;
+}
+
+.brick-emoji:active {
+    cursor: grabbing;
+}
+
+/* Emoji positioning for left bricks - emoji in top-left corner (closer to screen edge) */
+.brick-left .brick-emoji {
+    top: -20px;
+    left: -15px;
+}
+
+/* Emoji positioning for right bricks - emoji in top-right corner (closer to screen edge) */
+.brick-right .brick-emoji {
+    top: -22px;
+    right: -20px;
+}
+
+/* Different animation delays for each emoji */
+.emoji-1 {
+    animation-delay: 0s;
+}
+
+.emoji-2 {
+    animation-delay: -0.5s;
+}
+
+.emoji-3 {
+    animation-delay: -1s;
+}
+
+.emoji-4 {
+    animation-delay: -1.5s;
+}
+
+.emoji-5 {
+    animation-delay: -2s;
+}
+
+/* Gentle floating animation for emojis */
+@keyframes gentle-float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-3px) rotate(1deg);
+    }
+    50% {
+        transform: translateY(-6px) rotate(0deg);
+    }
+    75% {
+        transform: translateY(-3px) rotate(-1deg);
+    }
+}
+
+/* Responsive design for brick layout */
+@media (max-width: 768px) {
+    .student-brick {
+        width: 90%;
+        padding: 2rem;
+        min-height: 100px;
+    }
+    
+    .brick-content {
+        padding-right: 1rem;
+    }
+    
+    .brick-emoji {
+        font-size: 2rem;
+    }
+    
+    .brick-left .brick-emoji {
+        top: 15px;
+        left: 15px;
+    }
+    
+    .brick-right .brick-emoji {
+        top: 15px;
+        right: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .student-brick {
+        width: 95%;
+        padding: 1.5rem;
+    }
+    
+    .brick-content blockquote {
+        font-size: 1rem;
+    }
+    
+    .brick-emoji {
+        font-size: 1.8rem;
+    }
 }
 
 /* CTA Section */
