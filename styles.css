@@ -1152,8 +1152,8 @@ blockquote {
 
 .mobile-nav {
     display: none;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 70px;
     left: 0;
     right: 0;
     background: rgba(255, 255, 255, 0.98);
@@ -1162,6 +1162,8 @@ blockquote {
     padding: 1rem 0;
     flex-direction: column;
     gap: 1rem;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .mobile-nav.active {
@@ -1471,6 +1473,16 @@ blockquote {
         gap: 2rem;
         align-items: center;
         text-align: center;
+    }
+    
+    /* Better mobile footer spacing */
+    footer {
+        padding: 2rem 1rem;
+    }
+    
+    .footer-top-line img {
+        max-width: 120px;
+        height: auto;
     }
     
     .mpGTIt {

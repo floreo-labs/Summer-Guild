@@ -707,6 +707,15 @@ function setupMobileMenu() {
     
     // Toggle mobile menu
     mobileMenuToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        mobileNav.classList.toggle('active');
+        mobileMenuToggle.textContent = mobileNav.classList.contains('active') ? '✕' : '☰';
+    });
+    
+    // Add touch support for mobile menu toggle
+    mobileMenuToggle.addEventListener('touchend', (e) => {
+        e.preventDefault();
         e.stopPropagation();
         mobileNav.classList.toggle('active');
         mobileMenuToggle.textContent = mobileNav.classList.contains('active') ? '✕' : '☰';
@@ -715,6 +724,13 @@ function setupMobileMenu() {
     // Close mobile menu when clicking on links
     mobileNavLinks.forEach(link => {
         link.addEventListener('click', () => {
+            mobileNav.classList.remove('active');
+            mobileMenuToggle.textContent = '☰';
+        });
+        
+        // Add touch support for mobile menu links
+        link.addEventListener('touchend', (e) => {
+            e.preventDefault();
             mobileNav.classList.remove('active');
             mobileMenuToggle.textContent = '☰';
         });
