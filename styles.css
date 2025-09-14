@@ -24,8 +24,8 @@ body, html {
 .btn-primary:active,
 .btn-primary:focus {
   outline: none;
-  box-shadow: 0 8px 25px rgba(51, 102, 255, 0.3); /* keeps same shadow as hover */
-  background: #2952CC; /* matches hover background */
+  box-shadow: 0 8px 25px rgba(255, 83, 46, 0.3); /* keeps same shadow as hover */
+  background: #FF532E; /* matches hover background */
   border-radius: 50px;
   padding: 1rem 2rem;
   font-size: 1rem;
@@ -250,7 +250,7 @@ body, html {
 }
 
 .nav a:hover {
-    color: #3366FF;
+    color: #050CFF;
 }
 
 .nav a::after {
@@ -260,7 +260,7 @@ body, html {
     height: 2px;
     bottom: -5px;
     left: 50%;
-    background-color: #3366FF;
+    background-color: #050CFF;
     transition: all 0.3s ease;
     transform: translateX(-50%);
 }
@@ -306,7 +306,7 @@ body, html {
 }
 
 .btn-primary {
-    background: #3366FF;
+    background: #050CFF;
     color: white;
     border: none;
     padding: 1rem 2rem;
@@ -320,15 +320,15 @@ body, html {
 }
 
 .btn-primary:hover {
-    background: #2952CC;
+    background: #FF532E;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(51, 102, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(255, 83, 46, 0.3);
 }
 
 .btn-secondary {
     background: transparent;
-    color: #3366FF;
-    border: 2px solid #3366FF;
+    color: #050CFF;
+    border: 2px solid #050CFF;
     padding: 1rem 2rem;
     border-radius: 50px;
     font-size: 1rem;
@@ -340,8 +340,9 @@ body, html {
 }
 
 .btn-secondary:hover {
-    background: #3366FF;
+    background: #FF532E;
     color: white;
+    border-color: #FF532E;
     transform: translateY(-2px);
 }
 
@@ -433,6 +434,96 @@ body, html {
     background: #f8f9ff;
 }
 
+/* Program Description */
+.program-description {
+    max-width: 1000px;
+    margin: 0 auto 4rem;
+    text-align: justify;
+}
+
+.program-description p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+/* Program Details */
+.program-details {
+    margin-bottom: 4rem;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.detail-section h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.student-benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.student-benefits li {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(5, 12, 255, 0.1);
+    position: relative;
+    padding-left: 2rem;
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.student-benefits li:last-child {
+    border-bottom: none;
+}
+
+.student-benefits li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0.8rem;
+    color: #050CFF;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.program-info {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.info-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-item strong {
+    color: #050CFF;
+    font-weight: 600;
+    display: inline-block;
+    min-width: 100px;
+}
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -456,7 +547,7 @@ body, html {
 .stat-number {
     font-size: 3rem;
     font-weight: 700;
-    color: #3366FF;
+    color: #050CFF;
     margin-bottom: 0.5rem;
 }
 
@@ -518,7 +609,7 @@ body, html {
         }
 
         .carousel::-webkit-scrollbar-thumb {
-            background: #3366FF;
+            background: #050CFF;
             border-radius: 10px;
         }
 
@@ -582,7 +673,7 @@ body, html {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(51, 102, 255, 0.9);
+            background: rgba(5, 12, 255, 0.9);
             color: white;
             border: none;
             width: 60px;
@@ -599,7 +690,7 @@ body, html {
         }
 
         .play-button:hover {
-            background: rgba(41, 82, 204, 0.9);
+            background: rgba(255, 83, 46, 0.9);
             transform: translate(-50%, -50%) scale(1.1);
         }
 
@@ -653,8 +744,8 @@ body, html {
         }
 
         .duration {
-            background: rgba(51, 102, 255, 0.1);
-            color: #3366FF;
+            background: rgba(5, 12, 255, 0.1);
+            color: #050CFF;
         }
 
         .level {
@@ -727,7 +818,7 @@ body, html {
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid #3366FF;
+    border: 4px solid #050CFF;
 }
 
 .instructor-info h3 {
@@ -739,7 +830,7 @@ body, html {
 }
 
 .instructor-info .title {
-    color: #3366FF;
+    color: #050CFF;
     font-weight: 500;
     text-align: center;
     margin-bottom: 1rem;
@@ -761,8 +852,8 @@ body, html {
 }
 
 .tag {
-    background: rgba(51, 102, 255, 0.1);
-    color: #3366FF;
+    background: rgba(5, 12, 255, 0.1);
+    color: #050CFF;
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
     font-size: 0.8rem;
@@ -839,7 +930,7 @@ blockquote {
 .brick-content blockquote::before {
     content: '"';
     font-size: 3rem;
-    color: #3366FF;
+    color: #050CFF;
     position: absolute;
     top: -10px;
     left: -20px;
@@ -850,7 +941,7 @@ blockquote {
 .brick-content blockquote::after {
     content: '"';
     font-size: 3rem;
-    color: #3366FF;
+    color: #050CFF;
     position: absolute;
     bottom: -30px;
     right: -10px;
@@ -972,7 +1063,7 @@ blockquote {
 /* CTA Section */
 .cta {
     padding: 80px 0;
-    background: linear-gradient(135deg, #3366FF 0%, #2952CC 100%);
+    background: linear-gradient(135deg, #050CFF 0%, #0409CC 100%);
     color: white;
 }
 
@@ -1046,15 +1137,263 @@ blockquote {
     margin: 0;
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
+/* Mobile-First Responsive Design */
+
+/* Mobile Navigation */
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+    padding: 0.5rem;
+}
+
+.mobile-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mobile-nav.active {
+    display: flex;
+}
+
+.mobile-nav a {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.mobile-nav a:hover {
+    color: #050CFF;
+}
+
+/* Large screens (1200px and up) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+        padding: 0 40px;
+    }
+    
+    .hero-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+    }
+    
     .instructors-grid {
         grid-template-columns: repeat(4, 1fr);
-        gap: 1rem;
+        gap: 1.5rem;
     }
 }
 
-@media (max-width: 768px) {
+/* Tablets and small desktops (768px to 1199px) */
+@media (max-width: 1199px) {
+    .container {
+        padding: 0 30px;
+    }
+    
+    .hero-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+    }
+    
+    .hero-text h1 {
+        font-size: 3rem;
+    }
+    
+    .instructors-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .circles-container {
+        width: 500px;
+        height: 350px;
+    }
+}
+
+/* Mobile landscape and small tablets (481px to 767px) */
+@media (max-width: 767px) {
+    .container {
+        padding: 0 20px;
+    }
+    
+    /* Header mobile styles */
+    .header-content {
+        padding: 0.8rem 0;
+    }
+    
+    .nav {
+        display: none;
+    }
+    
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    .mobile-nav {
+        display: flex;
+    }
+    
+    /* Improve text readability on mobile */
+    body {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+    
+    /* Better touch targets */
+    .btn-primary, .btn-secondary {
+        min-height: 44px;
+        padding: 0.8rem 1.5rem;
+    }
+    
+    .mobile-nav a {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Hero section mobile */
+    .hero {
+        padding: 100px 0 60px;
+    }
+    
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .hero-text h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+    
+    .hero-text p {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+    
+    /* Improve program description on mobile */
+    .program-description {
+        text-align: left;
+        margin-bottom: 3rem;
+    }
+    
+    .program-description p {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 1.2rem;
+    }
+    
+    /* Circles container mobile */
+    .circles-container {
+        width: 100%;
+        max-width: 400px;
+        height: 300px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .draggable-bg {
+        max-width: 200px;
+    }
+    
+    .circle-large {
+        min-width: 150px;
+    }
+    
+    .circle-medium {
+        min-width: 120px;
+    }
+    
+    .circle-small {
+        min-width: 100px;
+    }
+    
+    .circle-tiny {
+        min-width: 60px;
+    }
+    
+    /* Section headers mobile */
+    .section-header h2 {
+        font-size: 2.2rem;
+    }
+    
+    .section-header p {
+        font-size: 1rem;
+    }
+    
+    /* Program overview mobile */
+    .details-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .program-description p {
+        font-size: 1rem;
+    }
+    
+    .detail-section h3 {
+        font-size: 1.2rem;
+    }
+    
+    .program-info {
+        padding: 1.5rem;
+    }
+    
+    .info-item {
+        padding: 0.8rem 0;
+    }
+    
+    .info-item strong {
+        min-width: 80px;
+        font-size: 0.9rem;
+    }
+    
+    /* Stats grid mobile */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .stat-card {
+        padding: 2rem 1rem;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    /* Video carousel mobile */
+    .carousel {
+        padding: 1rem 0;
+        gap: 1rem;
+    }
+    
+    .class-card {
+        flex: 0 0 280px;
+    }
+    
+    .video-container {
+        height: 160px;
+    }
+    
+    /* Instructors mobile */
     .instructors-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
@@ -1063,12 +1402,436 @@ blockquote {
     .instructor-card {
         padding: 1.5rem;
     }
+    
+    .avatar-gif {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .instructor-info h3 {
+        font-size: 1.1rem;
+    }
+    
+    .instructor-info blockquote {
+        font-size: 0.9rem;
+    }
+    
+    /* Student bricks mobile */
+    .student-brick {
+        width: 90%;
+        padding: 2rem;
+        min-height: 100px;
+    }
+    
+    .brick-content {
+        padding-right: 1rem;
+    }
+    
+    .brick-emoji {
+        font-size: 2rem;
+    }
+    
+    .brick-left .brick-emoji {
+        top: 15px;
+        left: 15px;
+    }
+    
+    .brick-right .brick-emoji {
+        top: 15px;
+        right: 15px;
+    }
+    
+    /* CTA mobile */
+    .cta-content h2 {
+        font-size: 2rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        max-width: 300px;
+        padding: 0.8rem 1.5rem;
+    }
+    
+    /* Footer mobile */
+    .footer-top-line {
+        flex-direction: column;
+        gap: 1rem;
+        padding-right: 0;
+        text-align: center;
+    }
+    
+    .footer-4-columns {
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .mpGTIt {
+        justify-content: center;
+    }
 }
 
+/* Small mobile devices (320px to 480px) */
 @media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    /* Header small mobile */
+    .header-content {
+        padding: 0.6rem 0;
+    }
+    
+    #navbar-mark {
+        height: 35px;
+    }
+    
+    /* Improve readability on small screens */
+    body {
+        font-size: 15px;
+    }
+    
+    /* Better spacing for small screens */
+    .section-header {
+        margin-bottom: 3rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.8rem;
+        line-height: 1.3;
+    }
+    
+    .section-header p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    /* Hero small mobile */
+    .hero {
+        padding: 80px 0 40px;
+    }
+    
+    .hero-text h1 {
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+    
+    .hero-text p {
+        font-size: 1rem;
+    }
+    
+    /* Circles small mobile */
+    .circles-container {
+        height: 250px;
+        padding: 15px;
+    }
+    
+    .draggable-bg {
+        max-width: 150px;
+    }
+    
+    .circle-large {
+        min-width: 120px;
+    }
+    
+    .circle-medium {
+        min-width: 100px;
+    }
+    
+    .circle-small {
+        min-width: 80px;
+    }
+    
+    .circle-tiny {
+        min-width: 50px;
+    }
+    
+    /* Section headers small mobile */
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .section-header p {
+        font-size: 0.9rem;
+    }
+    
+    /* Program overview small mobile */
+    .program-description p {
+        font-size: 0.95rem;
+    }
+    
+    .detail-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    .program-info {
+        padding: 1.2rem;
+    }
+    
+    .info-item {
+        padding: 0.7rem 0;
+        font-size: 0.9rem;
+    }
+    
+    .info-item strong {
+        min-width: 70px;
+        font-size: 0.85rem;
+    }
+    
+    .student-benefits li {
+        font-size: 0.9rem;
+        padding: 0.6rem 0;
+    }
+    
+    /* Stats grid small mobile */
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .stat-card {
+        padding: 1.5rem 1rem;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .stat-label {
+        font-size: 1rem;
+    }
+    
+    /* Video carousel small mobile */
+    .class-card {
+        flex: 0 0 250px;
+    }
+    
+    .video-container {
+        height: 140px;
+    }
+    
+    .class-info {
+        padding: 1rem;
+    }
+    
+    .class-info h3 {
+        font-size: 1.1rem;
+    }
+    
+    .class-info p {
+        font-size: 0.9rem;
+    }
+    
+    /* Instructors small mobile */
     .instructors-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
+    }
+    
+    .instructor-card {
+        padding: 1.2rem;
+    }
+    
+    .avatar-gif {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .instructor-info h3 {
+        font-size: 1rem;
+    }
+    
+    .instructor-info .title {
+        font-size: 0.9rem;
+    }
+    
+    .instructor-info blockquote {
+        font-size: 0.85rem;
+    }
+    
+    .tag {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem;
+    }
+    
+    /* Student bricks small mobile */
+    .student-brick {
+        width: 95%;
+        padding: 1.5rem;
+        min-height: 80px;
+    }
+    
+    .brick-content blockquote {
+        font-size: 1rem;
+    }
+    
+    .brick-emoji {
+        font-size: 1.8rem;
+    }
+    
+    .brick-left .brick-emoji {
+        top: 10px;
+        left: 10px;
+    }
+    
+    .brick-right .brick-emoji {
+        top: 10px;
+        right: 10px;
+    }
+    
+    /* CTA small mobile */
+    .cta-content h2 {
+        font-size: 1.6rem;
+    }
+    
+    .cta-content p {
+        font-size: 1rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Footer small mobile */
+    .CJF7A2 {
+        padding: 20px 0 10px;
+    }
+    
+    .footer-4-columns {
+        gap: 1.5rem;
+    }
+    
+    .comp-let0ejd9,
+    .comp-let1nb14,
+    .comp-let0daog {
+        gap: 6px;
+    }
+    
+    .comp-let0ejd9 p,
+    .comp-let1nb14 p,
+    .comp-let0daog p {
+        font-size: 10px;
+    }
+    
+    .comp-let1m5u4 a,
+    .comp-ljxgmofr a,
+    .comp-let0ezw6 a,
+    .comp-let1nb191 a,
+    .comp-ljxgqqx3 a,
+    .comp-let0jzmw a,
+    .comp-il0yizug a,
+    .comp-let1nb171 a {
+        font-size: 10px;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .draggable-bg:hover,
+    .instructor-card:hover,
+    .student-brick:hover,
+    .class-card:hover {
+        transform: none;
+    }
+    
+    .btn-primary:hover,
+    .btn-secondary:hover {
+        transform: none;
+    }
+    
+    .nav a:hover::after {
+        width: 0;
+    }
+    
+    .nav a:active::after {
+        width: 100%;
+    }
+    
+    /* Improve touch targets */
+    .play-button {
+        min-width: 60px;
+        min-height: 60px;
+    }
+    
+    .mobile-menu-toggle {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    /* Better touch feedback */
+    .btn-primary:active,
+    .btn-secondary:active {
+        transform: scale(0.98);
+    }
+    
+    .mobile-nav a:active {
+        background-color: rgba(5, 12, 255, 0.1);
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .draggable-bg {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        padding: 60px 0 40px;
+    }
+    
+    .hero-text h1 {
+        font-size: 2rem;
+    }
+    
+    .circles-container {
+        height: 200px;
+    }
+}
+
+/* Additional mobile optimizations */
+@media (max-width: 767px) {
+    /* Prevent horizontal scrolling */
+    body {
+        overflow-x: hidden;
+    }
+    
+    /* Improve video carousel on mobile */
+    .carousel {
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+    }
+    
+    .class-card {
+        scroll-snap-align: start;
+    }
+    
+    /* Better spacing for mobile sections */
+    .overview,
+    .classes,
+    .instructors,
+    .students,
+    .cta {
+        padding: 60px 0;
+    }
+    
+    /* Improve readability of long text */
+    .program-description p,
+    .instructor-info blockquote,
+    .brick-content blockquote {
+        word-wrap: break-word;
+        hyphens: auto;
     }
 }
 

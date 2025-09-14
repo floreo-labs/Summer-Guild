@@ -128,35 +128,20 @@ let emojiAnimationId = null;
 
 // Initialize draggable functionality for emojis
 draggableEmojis.forEach(emoji => {
+  // Mouse events
   emoji.addEventListener('mousedown', (e) => {
-    isDraggingEmoji = true;
-    currentDraggedEmoji = emoji;
-    hasBeenDraggedEmoji.add(emoji);
-    emoji.style.animation = 'none';
-    emoji.style.transform = 'scale(1.1)';
-    
-    // Cancel any ongoing animation
-    if (emojiAnimationId) {
-      cancelAnimationFrame(emojiAnimationId);
-      emojiAnimationId = null;
-    }
-    
-    // Get current position relative to the brick
-    const brick = emoji.closest('.student-brick');
-    const brickRect = brick.getBoundingClientRect();
-    const emojiRect = emoji.getBoundingClientRect();
-    
-    // Calculate current position relative to brick
-    emojiCurrentX = emojiRect.left - brickRect.left;
-    emojiCurrentY = emojiRect.top - brickRect.top;
-    
-    // Calculate mouse offset from emoji
-    emojiStartX = e.clientX - emojiRect.left;
-    emojiStartY = e.clientY - emojiRect.top;
-    emojiLastX = e.clientX;
-    emojiLastY = e.clientY;
-    
+    startEmojiDrag(e, emoji);
+  });
+
+  // Touch events for mobile
+  emoji.addEventListener('touchstart', (e) => {
     e.preventDefault();
+    const touch = e.touches[0];
+    const mouseEvent = new MouseEvent('mousedown', {
+      clientX: touch.clientX,
+      clientY: touch.clientY
+    });
+    startEmojiDrag(mouseEvent, emoji);
   });
 
   // Prevent context menu on right click
@@ -165,39 +150,92 @@ draggableEmojis.forEach(emoji => {
   });
 });
 
+function startEmojiDrag(e, emoji) {
+  isDraggingEmoji = true;
+  currentDraggedEmoji = emoji;
+  hasBeenDraggedEmoji.add(emoji);
+  emoji.style.animation = 'none';
+  emoji.style.transform = 'scale(1.1)';
+  
+  // Cancel any ongoing animation
+  if (emojiAnimationId) {
+    cancelAnimationFrame(emojiAnimationId);
+    emojiAnimationId = null;
+  }
+  
+  // Get current position relative to the brick
+  const brick = emoji.closest('.student-brick');
+  const brickRect = brick.getBoundingClientRect();
+  const emojiRect = emoji.getBoundingClientRect();
+  
+  // Calculate current position relative to brick
+  emojiCurrentX = emojiRect.left - brickRect.left;
+  emojiCurrentY = emojiRect.top - brickRect.top;
+  
+  // Calculate mouse offset from emoji
+  emojiStartX = e.clientX - emojiRect.left;
+  emojiStartY = e.clientY - emojiRect.top;
+  emojiLastX = e.clientX;
+  emojiLastY = e.clientY;
+  
+  e.preventDefault();
+}
+
+// Mouse events for emojis
 document.addEventListener('mouseup', () => {
   if (isDraggingEmoji && currentDraggedEmoji) {
-    isDraggingEmoji = false;
-    currentDraggedEmoji.style.transform = 'scale(1)';
-    
-    // Start gentle floating animation
-    animateEmojiToStop();
-    currentDraggedEmoji = null;
+    endEmojiDrag();
   }
 });
 
 document.addEventListener('mousemove', (e) => {
   if (!isDraggingEmoji || !currentDraggedEmoji) return;
   e.preventDefault();
+  handleEmojiMove(e.clientX, e.clientY);
+});
 
+// Touch events for emojis
+document.addEventListener('touchend', () => {
+  if (isDraggingEmoji && currentDraggedEmoji) {
+    endEmojiDrag();
+  }
+});
+
+document.addEventListener('touchmove', (e) => {
+  if (!isDraggingEmoji || !currentDraggedEmoji) return;
+  e.preventDefault();
+  const touch = e.touches[0];
+  handleEmojiMove(touch.clientX, touch.clientY);
+});
+
+function endEmojiDrag() {
+  isDraggingEmoji = false;
+  currentDraggedEmoji.style.transform = 'scale(1)';
+  
+  // Start gentle floating animation
+  animateEmojiToStop();
+  currentDraggedEmoji = null;
+}
+
+function handleEmojiMove(clientX, clientY) {
   // Calculate velocity for smooth deceleration
-  emojiVelocityX = e.clientX - emojiLastX;
-  emojiVelocityY = e.clientY - emojiLastY;
-  emojiLastX = e.clientX;
-  emojiLastY = e.clientY;
+  emojiVelocityX = clientX - emojiLastX;
+  emojiVelocityY = clientY - emojiLastY;
+  emojiLastX = clientX;
+  emojiLastY = clientY;
 
   // Get brick position for relative positioning
   const brick = currentDraggedEmoji.closest('.student-brick');
   const brickRect = brick.getBoundingClientRect();
   
   // Calculate new position relative to brick
-  emojiCurrentX = e.clientX - brickRect.left - emojiStartX;
-  emojiCurrentY = e.clientY - brickRect.top - emojiStartY;
+  emojiCurrentX = clientX - brickRect.left - emojiStartX;
+  emojiCurrentY = clientY - brickRect.top - emojiStartY;
 
   // Apply smooth movement
   currentDraggedEmoji.style.left = `${emojiCurrentX}px`;
   currentDraggedEmoji.style.top = `${emojiCurrentY}px`;
-});
+}
 
 function animateEmojiToStop() {
   const friction = 0.95; // Smooth friction for emojis
@@ -243,35 +281,20 @@ let animationId = null;
 
 // Initialize draggable functionality for all elements
 draggableElements.forEach(element => {
+  // Mouse events
   element.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    currentDraggedElement = element;
-    hasBeenDragged.add(element);
-    element.classList.add('dragging');
-    element.classList.remove('smooth-levitate'); // Remove smooth levitation when starting to drag
-    
-    // Cancel any ongoing animation
-    if (animationId) {
-      cancelAnimationFrame(animationId);
-      animationId = null;
-    }
-    
-    // Get current position relative to the container
-    const container = document.querySelector('.circles-container');
-    const containerRect = container.getBoundingClientRect();
-    const elementRect = element.getBoundingClientRect();
-    
-    // Calculate current position relative to container
-    currentX = elementRect.left - containerRect.left;
-    currentY = elementRect.top - containerRect.top;
-    
-    // Calculate mouse offset from element
-    startX = e.clientX - elementRect.left;
-    startY = e.clientY - elementRect.top;
-    lastX = e.clientX;
-    lastY = e.clientY;
-    
+    startDrag(e, element);
+  });
+
+  // Touch events for mobile
+  element.addEventListener('touchstart', (e) => {
     e.preventDefault();
+    const touch = e.touches[0];
+    const mouseEvent = new MouseEvent('mousedown', {
+      clientX: touch.clientX,
+      clientY: touch.clientY
+    });
+    startDrag(mouseEvent, element);
   });
 
   // Prevent context menu on right click
@@ -280,44 +303,97 @@ draggableElements.forEach(element => {
   });
 });
 
+function startDrag(e, element) {
+  isDragging = true;
+  currentDraggedElement = element;
+  hasBeenDragged.add(element);
+  element.classList.add('dragging');
+  element.classList.remove('smooth-levitate'); // Remove smooth levitation when starting to drag
+  
+  // Cancel any ongoing animation
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+    animationId = null;
+  }
+  
+  // Get current position relative to the container
+  const container = document.querySelector('.circles-container');
+  const containerRect = container.getBoundingClientRect();
+  const elementRect = element.getBoundingClientRect();
+  
+  // Calculate current position relative to container
+  currentX = elementRect.left - containerRect.left;
+  currentY = elementRect.top - containerRect.top;
+  
+  // Calculate mouse offset from element
+  startX = e.clientX - elementRect.left;
+  startY = e.clientY - elementRect.top;
+  lastX = e.clientX;
+  lastY = e.clientY;
+  
+  e.preventDefault();
+}
+
+// Mouse events
 document.addEventListener('mouseup', () => {
   if (isDragging && currentDraggedElement) {
-    isDragging = false;
-    currentDraggedElement.classList.remove('dragging');
-    
-    // If the element has been dragged, permanently stop levitation
-    if (hasBeenDragged.has(currentDraggedElement)) {
-      currentDraggedElement.classList.add('no-levitate');
-    }
-    
-    // Start gentle floating animation
-    animateToStop();
-    currentDraggedElement = null;
+    endDrag();
   }
 });
 
 document.addEventListener('mousemove', (e) => {
   if (!isDragging || !currentDraggedElement) return;
   e.preventDefault();
+  handleMove(e.clientX, e.clientY);
+});
 
+// Touch events
+document.addEventListener('touchend', () => {
+  if (isDragging && currentDraggedElement) {
+    endDrag();
+  }
+});
+
+document.addEventListener('touchmove', (e) => {
+  if (!isDragging || !currentDraggedElement) return;
+  e.preventDefault();
+  const touch = e.touches[0];
+  handleMove(touch.clientX, touch.clientY);
+});
+
+function endDrag() {
+  isDragging = false;
+  currentDraggedElement.classList.remove('dragging');
+  
+  // If the element has been dragged, permanently stop levitation
+  if (hasBeenDragged.has(currentDraggedElement)) {
+    currentDraggedElement.classList.add('no-levitate');
+  }
+  
+  // Start gentle floating animation
+  animateToStop();
+  currentDraggedElement = null;
+}
+
+function handleMove(clientX, clientY) {
   // Calculate velocity for smooth deceleration
-  velocityX = e.clientX - lastX;
-  velocityY = e.clientY - lastY;
-  lastX = e.clientX;
-  lastY = e.clientY;
+  velocityX = clientX - lastX;
+  velocityY = clientY - lastY;
+  lastX = clientX;
+  lastY = clientY;
 
   // Get container position for relative positioning
   const container = document.querySelector('.circles-container');
   const containerRect = container.getBoundingClientRect();
   
   // Calculate new position relative to container
-  currentX = e.clientX - containerRect.left - startX;
-  currentY = e.clientY - containerRect.top - startY;
+  currentX = clientX - containerRect.left - startX;
+  currentY = clientY - containerRect.top - startY;
 
   // Apply smooth movement
   currentDraggedElement.style.left = `${currentX}px`;
   currentDraggedElement.style.top = `${currentY}px`;
-});
+}
 
 function animateToStop() {
   const friction = 0.97; // Smoother friction to prevent glitching
@@ -622,10 +698,44 @@ function handleLearnMore() {
     scrollToSection('#overview');
 }
 
-// Mobile Menu Toggle (if needed in future)
+// Mobile Menu Toggle
 function setupMobileMenu() {
-    // Placeholder for mobile menu functionality
-    // Can be expanded if mobile menu is added to HTML
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileNavLinks = mobileNav.querySelectorAll('a');
+    
+    if (!mobileMenuToggle || !mobileNav) return;
+    
+    // Toggle mobile menu
+    mobileMenuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mobileNav.classList.toggle('active');
+        mobileMenuToggle.textContent = mobileNav.classList.contains('active') ? '✕' : '☰';
+    });
+    
+    // Close mobile menu when clicking on links
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileNav.classList.remove('active');
+            mobileMenuToggle.textContent = '☰';
+        });
+    });
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!mobileNav.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+            mobileNav.classList.remove('active');
+            mobileMenuToggle.textContent = '☰';
+        }
+    });
+    
+    // Close mobile menu on window resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 767) {
+            mobileNav.classList.remove('active');
+            mobileMenuToggle.textContent = '☰';
+        }
+    });
 }
 
 // Performance Optimization
