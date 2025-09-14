@@ -629,16 +629,15 @@ function setupButtonHandlers() {
     
     ctaButtons.forEach(button => {
         button.addEventListener('click', (e) => {
-            // Add ripple effect
-            createRipple(e, button);
+            e.preventDefault();
             
             // Handle specific button actions
             if (button.textContent.includes('Explore')) {
                 scrollToSection('#classes');
-            } else if (button.textContent.includes('Get Notified')) {
-                handleNotificationSignup();
-            } else if (button.textContent.includes('Learn More')) {
-                handleLearnMore();
+            } else if (button.textContent.includes('Apply to Summer Guild')) {
+                window.open('https://www.researchnycalumni.org/news/college/389/389-CUNY-Tech-Equity-2025-Summer-Guild-Student-Application', '_blank');
+            } else if (button.textContent.includes('About Floreo Labs')) {
+                window.open('https://www.floreolabs.org/post/floreo-cuny-partner-to-deliver-summer-guild-program', '_blank');
             }
         });
     });
@@ -667,7 +666,7 @@ function scrollToSection(sectionId) {
     const section = document.querySelector(sectionId);
     if (section) {
         const headerHeight = header.offsetHeight;
-        const targetPosition = section.offsetTop - headerHeight - 20;
+        const targetPosition = section.offsetTop - headerHeight + 50; // Reduced offset for better centering
         
         window.scrollTo({
             top: targetPosition,
