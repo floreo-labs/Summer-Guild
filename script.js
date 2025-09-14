@@ -705,40 +705,64 @@ function setupMobileMenu() {
     
     if (!mobileMenuToggle || !mobileNav) return;
     
-    // Toggle mobile menu
+    // Toggle mobile menu - simplified for better mobile support
+    function toggleMobileMenu() {
+        mobileNav.classList.toggle('active');
+        mobileMenuToggle.textContent = mobileNav.classList.contains('active') ? '✕' : '☰';
+    }
+    
+    // Click event for mobile menu toggle
     mobileMenuToggle.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        mobileNav.classList.toggle('active');
-        mobileMenuToggle.textContent = mobileNav.classList.contains('active') ? '✕' : '☰';
+        toggleMobileMenu();
     });
     
-    // Add touch support for mobile menu toggle
+    // Touch event for mobile menu toggle
     mobileMenuToggle.addEventListener('touchend', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        mobileNav.classList.toggle('active');
-        mobileMenuToggle.textContent = mobileNav.classList.contains('active') ? '✕' : '☰';
+        toggleMobileMenu();
     });
     
     // Close mobile menu when clicking on links
     mobileNavLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            mobileNav.classList.remove('active');
-            mobileMenuToggle.textContent = '☰';
-        });
-        
-        // Add touch support for mobile menu links
-        link.addEventListener('touchend', (e) => {
+        link.addEventListener('click', (e) => {
             e.preventDefault();
             mobileNav.classList.remove('active');
             mobileMenuToggle.textContent = '☰';
+            
+            // Handle navigation after closing menu
+            const targetId = link.getAttribute('href');
+            if (targetId && targetId.startsWith('#')) {
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    const headerHeight = document.querySelector('.header').offsetHeight;
+                    const targetPosition = targetSection.offsetTop - headerHeight + 50;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
         });
     });
     
     // Close mobile menu when clicking outside
     document.addEventListener('click', (e) => {
-        if (!mobileNav.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+        if (mobileNav.classList.contains('active') && 
+            !mobileNav.contains(e.target) && 
+            !mobileMenuToggle.contains(e.target)) {
+            mobileNav.classList.remove('active');
+            mobileMenuToggle.textContent = '☰';
+        }
+    });
+    
+    // Also close on touch outside
+    document.addEventListener('touchend', (e) => {
+        if (mobileNav.classList.contains('active') && 
+            !mobileNav.contains(e.target) && 
+            !mobileMenuToggle.contains(e.target)) {
             mobileNav.classList.remove('active');
             mobileMenuToggle.textContent = '☰';
         }
