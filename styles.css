@@ -1471,19 +1471,22 @@ blockquote {
         padding: 0.8rem 1.5rem;
     }
     
-    /* Footer mobile */
+    /* Footer mobile - restore original layout with left alignment */
     .footer-top-line {
-        flex-direction: column;
-        gap: 1rem;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
         padding-right: 0;
-        text-align: center;
+        text-align: left;
+        margin-bottom: 2rem;
     }
     
     .footer-4-columns {
-        flex-direction: column;
-        gap: 2rem;
-        align-items: center;
-        text-align: center;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        text-align: left;
+        gap: 1rem;
     }
     
     /* Better mobile footer spacing */
@@ -1492,12 +1495,22 @@ blockquote {
     }
     
     .footer-top-line img {
-        max-width: 120px;
+        max-width: 80px;
         height: auto;
     }
     
     .mpGTIt {
-        justify-content: center;
+        justify-content: flex-start;
+    }
+    
+    /* Mobile footer text alignment */
+    .footer-4-columns > div {
+        text-align: left;
+    }
+    
+    .footer-4-columns p,
+    .footer-4-columns span {
+        text-align: left;
     }
 }
 
@@ -1737,7 +1750,16 @@ blockquote {
     }
     
     .footer-4-columns {
-        gap: 1.5rem;
+        gap: 1rem;
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+    }
+    
+    .footer-top-line {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
     }
     
     .comp-let0ejd9,
