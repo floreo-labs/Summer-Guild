@@ -479,10 +479,11 @@ body, html {
     padding: 0.8rem 0;
     border-bottom: 1px solid rgba(5, 12, 255, 0.1);
     position: relative;
-    padding-left: 2rem;
+    padding-left: 2.5rem;
     font-size: 1rem;
     color: #555;
-    line-height: 1.5;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
 }
 
 .student-benefits li:last-child {
@@ -493,10 +494,12 @@ body, html {
     content: "✓";
     position: absolute;
     left: 0;
-    top: 0.8rem;
+    top: 0.9rem;
     color: #050CFF;
     font-weight: bold;
     font-size: 1.1rem;
+    width: 1.5rem;
+    text-align: center;
 }
 
 .program-info {
@@ -1269,7 +1272,7 @@ blockquote {
     
     /* Hero section mobile */
     .hero {
-        padding: 100px 0 60px;
+        padding: 120px 0 60px;
     }
     
     .hero-content {
@@ -1527,7 +1530,7 @@ blockquote {
     
     /* Hero small mobile */
     .hero {
-        padding: 80px 0 40px;
+        padding: 100px 0 40px;
     }
     
     .hero-text h1 {
@@ -1599,7 +1602,15 @@ blockquote {
     
     .student-benefits li {
         font-size: 0.9rem;
-        padding: 0.6rem 0;
+        padding: 0.8rem 0;
+        padding-left: 2.5rem;
+        line-height: 1.6;
+        margin-bottom: 0.5rem;
+    }
+    
+    .student-benefits li::before {
+        top: 0.9rem;
+        width: 1.5rem;
     }
     
     /* Stats grid small mobile */
@@ -1800,7 +1811,7 @@ blockquote {
 /* Landscape orientation adjustments */
 @media (max-height: 500px) and (orientation: landscape) {
     .hero {
-        padding: 60px 0 40px;
+        padding: 80px 0 40px;
     }
     
     .hero-text h1 {
