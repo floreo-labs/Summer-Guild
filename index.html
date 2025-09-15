@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CUNY Tech Equity: 2025 Summer Guild | Floreo Labs</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Messina+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -23,6 +23,7 @@
                     <a href="#classes">Projects</a>
                     <a href="#instructors">Instructors</a>
                     <a href="#students">Students</a>
+                    <a href="#creators">Creators</a>
                 </nav>
                 <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
                     ☰
@@ -33,6 +34,7 @@
                 <a href="#classes">Projects</a>
                 <a href="#instructors">Instructors</a>
                 <a href="#students">Students</a>
+                <a href="#creators">Creators</a>
             </nav>
         </div>
     </header>
@@ -718,6 +720,72 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </section>
+
+    <!-- Creators Section -->
+    <section id="creators" class="creators">
+        <div class="container">
+            <div class="section-header">
+                <h2>Meet the Creators</h2>
+                <p>Learn more about the team who brought this project to life.</p>
+            </div>
+            
+            <!-- Bio Section -->
+            <div class="creators-bio">
+                <div class="creator-card">
+                    <div class="creator-avatar">
+                        <img src="Daria Profile Pic.jpg" alt="Daria Hrabar" class="creator-image">
+                    </div>
+                    <div class="creator-info">
+                        <h3>Daria Hrabar</h3>
+                        <p class="creator-role">Website Creator & Developer</p>
+                        <p class="creator-bio">Bio coming up</p>
+                        <a href="https://www.linkedin.com/in/daria-hrabar/" target="_blank" class="btn-linkedin">
+                            <span>Connect on LinkedIn</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="creator-card">
+                    <div class="creator-avatar">
+                        <img src="Juanita Profile Pic.jpg" alt="Juanita Herrera" class="creator-image">
+                    </div>
+                    <div class="creator-info">
+                        <h3>Juanita Herrera</h3>
+                        <p class="creator-role">Website Creator & Developer</p>
+                        <p class="creator-bio">Bio coming up</p>
+                        <a href="https://www.linkedin.com/in/juanita-herrera/" target="_blank" class="btn-linkedin">
+                            <span>Connect on LinkedIn</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Section -->
+            <div class="creators-video">
+                <div class="section-header">
+                    <h3>Learn Their Story</h3>
+                    <p>Hear from Daria and Juanita about their work, experiences, and what drives their passion for tech.</p>
+                </div>
+                
+                <div class="video-container" onclick="playVideo(this)" data-video-id="PLACEHOLDER_VIDEO_ID">
+                    <!-- Fallback placeholder -->
+                    <div class="video-placeholder">Video Coming Soon</div>
+                    
+                    <!-- Play button -->
+                    <button class="play-button">▶</button>
+                    
+                    <!-- Google Drive iframe (initially hidden) -->
+                    <iframe class="video-iframe" 
+                            src="" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    
+                    <!-- Error message -->
+                    <div class="error-message">Video temporarily unavailable</div>
+                </div>
             </div>
         </div>
     </section>
