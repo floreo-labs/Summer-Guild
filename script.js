@@ -7,7 +7,7 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
 
 // Video Section Beginning
 
-        // Single, clean playVideo function
+        // Single, clean playVideo function - opens video in new tab
         function playVideo(container) {
             // Get the video ID from data attribute
             const videoId = container.getAttribute('data-video-id');
@@ -16,46 +16,11 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
                 return;
             }
 
-            // Stop all other videos first
-            document.querySelectorAll('.video-container.playing').forEach(otherContainer => {
-                if (otherContainer !== container) {
-                    stopVideo(otherContainer);
-                }
-            });
+            // Create the direct Google Drive video URL
+            const videoUrl = `https://drive.google.com/file/d/${videoId}/view`;
 
-            // Show loading state
-            container.classList.add('loading');
-
-            // Get iframe element
-            const iframe = container.querySelector('.video-iframe');
-            const errorMsg = container.querySelector('.error-message');
-
-            // Create the embed URL for Google Drive
-            const embedUrl = `https://drive.google.com/file/d/${videoId}/preview?usp=embed_facebook`;
-
-            // Set iframe source and show video
-            iframe.src = embedUrl;
-            
-            // Wait a moment for loading, then show video
-            setTimeout(() => {
-                container.classList.remove('loading');
-                container.classList.add('playing');
-                
-                // Hide error message if it was showing
-                errorMsg.style.display = 'none';
-            }, 1000);
-
-            // Handle iframe load errors (basic check)
-            iframe.onerror = () => {
-                showError(container, 'Failed to load video');
-            };
-
-            // Optional: Add a timeout to show error if iframe doesn't load
-            setTimeout(() => {
-                if (container.classList.contains('loading')) {
-                    showError(container, 'Video took too long to load');
-                }
-            }, 10000); // 10 second timeout
+            // Open video in new tab
+            window.open(videoUrl, '_blank', 'noopener,noreferrer');
         }
 
         function stopVideo(container) {
