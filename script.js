@@ -5,104 +5,82 @@ const navLinks = document.querySelectorAll('.nav a');
 const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
 
 
-// Video Section Beginning
+// Video Section Beginning - ABSOLUTE ONE CLICK SYSTEM
 
-        // Enhanced playVideo function - plays video inline with single click
+        // ONE CLICK = COVER GONE + VIDEO SHOWS IMMEDIATELY
         function playVideo(container) {
-            console.log('playVideo called for container:', container);
+            console.log('=== ONE CLICK VIDEO PLAY ===');
             
-            // Get the video ID from data attribute
+            // Get video ID
             const videoId = container.getAttribute('data-video-id');
             if (!videoId) {
-                console.log('No video ID found');
-                showError(container, 'Video ID not found');
+                console.log('ERROR: No video ID');
                 return;
             }
-
-            // Check if video is already playing
+            
+            // Stop all other videos first
+            document.querySelectorAll('.video-container.playing').forEach(other => {
+                if (other !== container) {
+                    stopVideo(other);
+                }
+            });
+            
+            // If already playing, stop it
             if (container.classList.contains('playing')) {
-                console.log('Video already playing, stopping...');
                 stopVideo(container);
                 return;
             }
-
-            console.log('Starting video playback for ID:', videoId);
-
-            // Stop any other playing videos first
-            document.querySelectorAll('.video-container.playing').forEach(otherContainer => {
-                if (otherContainer !== container) {
-                    stopVideo(otherContainer);
-                }
-            });
-
-            // Create the Google Drive embed URL for inline playback
-            const embedUrl = `https://drive.google.com/file/d/${videoId}/preview`;
             
-            // Get the iframe element
+            // Get ALL elements
             const iframe = container.querySelector('.video-iframe');
             const playButton = container.querySelector('.play-button');
             const poster = container.querySelector('.video-poster');
             const placeholder = container.querySelector('.video-placeholder');
-
-            // Immediately hide play button and show loading
+            
+            // STEP 1: INSTANTLY HIDE EVERYTHING THAT COVERS THE VIDEO
             playButton.style.display = 'none';
-            container.classList.add('loading');
-
-            // Set up the iframe
+            if (poster) poster.style.display = 'none';
+            if (placeholder) placeholder.style.display = 'none';
+            
+            // STEP 2: INSTANTLY SHOW THE VIDEO IFRAME
+            iframe.style.display = 'block';
+            iframe.style.visibility = 'visible';
+            iframe.style.opacity = '1';
+            
+            // STEP 3: SET VIDEO SOURCE (this will take time to load, but iframe is already visible)
+            const embedUrl = `https://drive.google.com/file/d/${videoId}/preview`;
             iframe.src = embedUrl;
             
-            // Use a simple timeout approach for better reliability
-            setTimeout(() => {
-                container.classList.remove('loading');
-                container.classList.add('playing');
-                if (poster) poster.style.display = 'none';
-                if (placeholder) placeholder.style.display = 'none';
-            }, 1000);
-
-            iframe.onload = () => {
-                console.log('Video loaded successfully');
-                container.classList.remove('loading');
-                container.classList.add('playing');
-                if (poster) poster.style.display = 'none';
-                if (placeholder) placeholder.style.display = 'none';
-            };
-
-            iframe.onerror = () => {
-                console.log('Video failed to load');
-                container.classList.remove('loading');
-                playButton.style.display = 'flex';
-                showError(container, 'Video failed to load');
-            };
+            // STEP 4: ADD PLAYING CLASS IMMEDIATELY
+            container.classList.add('playing');
+            
+            console.log('COVER GONE - VIDEO SHOWING - LOADING:', videoId);
         }
 
+        // RESTORE COVER COMPLETELY
         function stopVideo(container) {
+            console.log('=== RESTORE COVER COMPLETELY ===');
+            
             const iframe = container.querySelector('.video-iframe');
             const playButton = container.querySelector('.play-button');
             const poster = container.querySelector('.video-poster');
             const placeholder = container.querySelector('.video-placeholder');
             
-            // Stop video by clearing iframe src
+            // STEP 1: HIDE VIDEO IFRAME COMPLETELY
             iframe.src = '';
+            iframe.style.display = 'none';
+            iframe.style.visibility = 'hidden';
+            iframe.style.opacity = '0';
             
-            // Remove playing state and restore UI
+            // STEP 2: REMOVE PLAYING CLASS
             container.classList.remove('playing', 'loading');
+            
+            // STEP 3: SHOW ALL COVER ELEMENTS
             playButton.style.display = 'flex';
+            if (poster) poster.style.display = 'block';
+            if (placeholder) placeholder.style.display = 'none'; // Keep placeholder hidden
             
-            // Always show the poster image to cover the gradient background
-            if (poster) {
-                poster.style.display = 'block';
-                poster.style.position = 'absolute';
-                poster.style.top = '0';
-                poster.style.left = '0';
-                poster.style.width = '100%';
-                poster.style.height = '100%';
-                poster.style.zIndex = '1';
-            }
-            
-            // Hide placeholder
-            if (placeholder) {
-                placeholder.style.display = 'none';
-            }
+            console.log('COVER FULLY RESTORED');
         }
 
         function showError(container, message) {
@@ -130,13 +108,42 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             
             // Add click event listeners to all video containers
             const videoContainers = document.querySelectorAll('.video-container');
-            videoContainers.forEach(container => {
-                container.addEventListener('click', function(e) {
-                    console.log('Video container clicked');
+            console.log('Found video containers:', videoContainers.length);
+            
+            videoContainers.forEach((container, index) => {
+                console.log(`Setting up container ${index}:`, container);
+                
+            // Add click listener to the entire container
+            container.addEventListener('click', function(e) {
+                console.log('=== CONTAINER CLICKED ===');
+                console.log('Target element:', e.target);
+                console.log('Container:', container);
+                e.preventDefault();
+                e.stopPropagation();
+                playVideo(container);
+            });
+            
+            // Add click listener to the play button specifically
+            const playButton = container.querySelector('.play-button');
+            if (playButton) {
+                playButton.addEventListener('click', function(e) {
+                    console.log('=== PLAY BUTTON CLICKED ===');
                     e.preventDefault();
                     e.stopPropagation();
                     playVideo(container);
                 });
+            }
+            
+            // Add click listener to the poster image as well
+            const poster = container.querySelector('.video-poster');
+            if (poster) {
+                poster.addEventListener('click', function(e) {
+                    console.log('=== POSTER CLICKED ===');
+                    e.preventDefault();
+                    e.stopPropagation();
+                    playVideo(container);
+                });
+            }
             });
             
             // Optional: Add arrow navigation
@@ -850,7 +857,7 @@ const debouncedScrollHandler = debounce(() => {
 document.addEventListener('DOMContentLoaded', () => {
     setupSmoothScrolling();
     setupIntersectionObserver();
-    setupVideoPlayers();
+    // setupVideoPlayers(); // Removed - conflicts with our custom iframe video system
     animateCounters();
     setupCardInteractions();
     setupLazyLoading();
