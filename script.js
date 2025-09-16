@@ -7,30 +7,102 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
 
 // Video Section Beginning
 
-        // Single, clean playVideo function - opens video in new tab
+        // Enhanced playVideo function - plays video inline with single click
         function playVideo(container) {
+            console.log('playVideo called for container:', container);
+            
             // Get the video ID from data attribute
             const videoId = container.getAttribute('data-video-id');
             if (!videoId) {
+                console.log('No video ID found');
                 showError(container, 'Video ID not found');
                 return;
             }
 
-            // Create the direct Google Drive video URL
-            const videoUrl = `https://drive.google.com/file/d/${videoId}/view`;
+            // Check if video is already playing
+            if (container.classList.contains('playing')) {
+                console.log('Video already playing, stopping...');
+                stopVideo(container);
+                return;
+            }
 
-            // Open video in new tab
-            window.open(videoUrl, '_blank', 'noopener,noreferrer');
+            console.log('Starting video playback for ID:', videoId);
+
+            // Stop any other playing videos first
+            document.querySelectorAll('.video-container.playing').forEach(otherContainer => {
+                if (otherContainer !== container) {
+                    stopVideo(otherContainer);
+                }
+            });
+
+            // Create the Google Drive embed URL for inline playback
+            const embedUrl = `https://drive.google.com/file/d/${videoId}/preview`;
+            
+            // Get the iframe element
+            const iframe = container.querySelector('.video-iframe');
+            const playButton = container.querySelector('.play-button');
+            const poster = container.querySelector('.video-poster');
+            const placeholder = container.querySelector('.video-placeholder');
+
+            // Immediately hide play button and show loading
+            playButton.style.display = 'none';
+            container.classList.add('loading');
+
+            // Set up the iframe
+            iframe.src = embedUrl;
+            
+            // Use a simple timeout approach for better reliability
+            setTimeout(() => {
+                container.classList.remove('loading');
+                container.classList.add('playing');
+                if (poster) poster.style.display = 'none';
+                if (placeholder) placeholder.style.display = 'none';
+            }, 1000);
+
+            iframe.onload = () => {
+                console.log('Video loaded successfully');
+                container.classList.remove('loading');
+                container.classList.add('playing');
+                if (poster) poster.style.display = 'none';
+                if (placeholder) placeholder.style.display = 'none';
+            };
+
+            iframe.onerror = () => {
+                console.log('Video failed to load');
+                container.classList.remove('loading');
+                playButton.style.display = 'flex';
+                showError(container, 'Video failed to load');
+            };
         }
 
         function stopVideo(container) {
             const iframe = container.querySelector('.video-iframe');
+            const playButton = container.querySelector('.play-button');
+            const poster = container.querySelector('.video-poster');
+            const placeholder = container.querySelector('.video-placeholder');
             
             // Stop video by clearing iframe src
             iframe.src = '';
             
-            // Remove playing state
+            // Remove playing state and restore UI
             container.classList.remove('playing', 'loading');
+            playButton.style.display = 'flex';
+            
+            // Always show the poster image to cover the gradient background
+            if (poster) {
+                poster.style.display = 'block';
+                poster.style.position = 'absolute';
+                poster.style.top = '0';
+                poster.style.left = '0';
+                poster.style.width = '100%';
+                poster.style.height = '100%';
+                poster.style.zIndex = '1';
+            }
+            
+            // Hide placeholder
+            if (placeholder) {
+                placeholder.style.display = 'none';
+            }
         }
 
         function showError(container, message) {
@@ -46,6 +118,8 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             }, 3000);
         }
 
+        // Fullscreen functionality removed since videos open in new tabs
+
         // Initialize carousel functionality
         document.addEventListener('DOMContentLoaded', function() {
             const carousel = document.getElementById('videoCarousel');
@@ -53,6 +127,17 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             
             // Add smooth scrolling
             carousel.style.scrollBehavior = 'smooth';
+            
+            // Add click event listeners to all video containers
+            const videoContainers = document.querySelectorAll('.video-container');
+            videoContainers.forEach(container => {
+                container.addEventListener('click', function(e) {
+                    console.log('Video container clicked');
+                    e.preventDefault();
+                    e.stopPropagation();
+                    playVideo(container);
+                });
+            });
             
             // Optional: Add arrow navigation
             // You can add navigation arrows here if needed
