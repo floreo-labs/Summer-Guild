@@ -694,6 +694,7 @@ body, html {
             opacity: 0;
         }
 
+        /* Video playing state */
         .video-container.playing .video-iframe {
             display: block !important;
             visibility: visible !important;
@@ -702,17 +703,35 @@ body, html {
 
         .video-container.playing .video-poster {
             display: none !important;
+            visibility: hidden !important;
         }
 
+        .video-container.playing .play-button {
+            display: none !important;
+            visibility: hidden !important;
+        }
+
+        /* Video not playing state */
         .video-container:not(.playing) .video-poster {
             display: block !important;
+            visibility: visible !important;
             position: absolute !important;
             top: 0 !important;
             left: 0 !important;
             width: 100% !important;
             height: 100% !important;
             z-index: 1 !important;
-            pointer-events: none !important; /* Ensure clicks pass through */
+        }
+
+        .video-container:not(.playing) .play-button {
+            display: flex !important;
+            visibility: visible !important;
+        }
+
+        .video-container:not(.playing) .video-iframe {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
         }
 
         /* Play button overlay */
@@ -721,21 +740,22 @@ body, html {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(5, 12, 255, 0.9);
+            background: rgba(5, 12, 255, 0.7);
             color: white;
             border: none;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
+            font-size: 1.2rem;
+            cursor: default;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(10px);
             z-index: 10;
-            pointer-events: none; /* Make button non-interactive */
+            pointer-events: none; /* Auto-play, no clicking needed */
+            opacity: 0.8;
         }
 
         .play-button:hover {
@@ -1357,12 +1377,38 @@ blockquote {
     display: none;
 }
 
+/* Creators video playing state */
 .creators-video .video-container.playing .video-iframe {
-    display: block;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .creators-video .video-container.playing .video-poster {
-    display: none;
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.creators-video .video-container.playing .play-button {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Creators video not playing state */
+.creators-video .video-container:not(.playing) .video-poster {
+    display: block !important;
+    visibility: visible !important;
+}
+
+.creators-video .video-container:not(.playing) .play-button {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+.creators-video .video-container:not(.playing) .video-iframe {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
 }
 
 .creators-video .play-button {
@@ -1370,21 +1416,22 @@ blockquote {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(5, 12, 255, 0.9);
+    background: rgba(5, 12, 255, 0.7);
     color: white;
     border: none;
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    font-size: 2rem;
-    cursor: pointer;
+    font-size: 1.8rem;
+    cursor: default;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(10px);
     z-index: 10;
-    pointer-events: none; /* Make button non-interactive */
+    pointer-events: none; /* Auto-play, no clicking needed */
+    opacity: 0.8;
 }
 
 .creators-video .play-button:hover {

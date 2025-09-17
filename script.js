@@ -5,172 +5,170 @@ const navLinks = document.querySelectorAll('.nav a');
 const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
 
 
-// Video Section Beginning - ABSOLUTE ONE CLICK SYSTEM
+// BULLETPROOF VIDEO SYSTEM - AUTO PLAY ON SCROLL
 
-        // ONE CLICK = COVER GONE + VIDEO SHOWS IMMEDIATELY
-        function playVideo(container) {
-            console.log('=== ONE CLICK VIDEO PLAY ===');
-            
-            // Get video ID
-            const videoId = container.getAttribute('data-video-id');
-            if (!videoId) {
-                console.log('ERROR: No video ID');
-                return;
-            }
-            
-            // Stop all other videos first
-            document.querySelectorAll('.video-container.playing').forEach(other => {
-                if (other !== container) {
-                    stopVideo(other);
-                }
-            });
-            
-            // If already playing, stop it
-            if (container.classList.contains('playing')) {
-                stopVideo(container);
-                return;
-            }
-            
-            // Get ALL elements
-            const iframe = container.querySelector('.video-iframe');
-            const playButton = container.querySelector('.play-button');
-            const poster = container.querySelector('.video-poster');
-            const placeholder = container.querySelector('.video-placeholder');
-            
-            // STEP 1: INSTANTLY HIDE EVERYTHING THAT COVERS THE VIDEO
-            playButton.style.display = 'none';
-            if (poster) poster.style.display = 'none';
-            if (placeholder) placeholder.style.display = 'none';
-            
-            // STEP 2: INSTANTLY SHOW THE VIDEO IFRAME
-            iframe.style.display = 'block';
-            iframe.style.visibility = 'visible';
-            iframe.style.opacity = '1';
-            
-            // STEP 3: SET VIDEO SOURCE (this will take time to load, but iframe is already visible)
-            const embedUrl = `https://drive.google.com/file/d/${videoId}/preview`;
-            iframe.src = embedUrl;
-            
-            // STEP 4: ADD PLAYING CLASS IMMEDIATELY
-            container.classList.add('playing');
-            
-            console.log('COVER GONE - VIDEO SHOWING - LOADING:', videoId);
+let currentPlayingVideo = null;
+let videoObserver = null;
+
+// Debug function to log video state
+function logVideoState(container, action) {
+    const videoId = container.getAttribute('data-video-id');
+    const isPlaying = container.classList.contains('playing');
+    console.log(`🎬 ${action} - Video ID: ${videoId}, Playing: ${isPlaying}`);
+}
+
+// Play video function with extensive error handling
+function playVideo(container) {
+    try {
+        logVideoState(container, 'ATTEMPTING TO PLAY');
+        
+        // Validate container
+        if (!container) {
+            console.error('❌ No container provided');
+            return;
         }
+        
+        // Get video ID
+        const videoId = container.getAttribute('data-video-id');
+        if (!videoId || videoId === 'PLACEHOLDER_VIDEO_ID') {
+            console.warn('⚠️ Invalid video ID:', videoId);
+            return;
+        }
+        
+        // Stop current video if different
+        if (currentPlayingVideo && currentPlayingVideo !== container) {
+            stopVideo(currentPlayingVideo);
+        }
+        
+        // If same video, don't restart
+        if (currentPlayingVideo === container) {
+            console.log('🔄 Same video already playing');
+            return;
+        }
+        
+        // Get elements with validation
+        const iframe = container.querySelector('.video-iframe');
+        const playButton = container.querySelector('.play-button');
+        const poster = container.querySelector('.video-poster');
+        
+        if (!iframe) {
+            console.error('❌ No iframe found in container');
+            return;
+        }
+        
+        // Hide cover elements
+        if (playButton) {
+            playButton.style.display = 'none';
+            playButton.style.visibility = 'hidden';
+        }
+        if (poster) {
+            poster.style.display = 'none';
+            poster.style.visibility = 'hidden';
+        }
+        
+        // Show video iframe
+        iframe.style.display = 'block';
+        iframe.style.visibility = 'visible';
+        iframe.style.opacity = '1';
+        
+        // Set video source
+        const embedUrl = `https://drive.google.com/file/d/${videoId}/preview`;
+        iframe.src = embedUrl;
+        
+        // Mark as playing
+        container.classList.add('playing');
+        currentPlayingVideo = container;
+        
+        console.log('✅ Video started successfully');
+        
+    } catch (error) {
+        console.error('❌ Error playing video:', error);
+    }
+}
 
-        // RESTORE COVER COMPLETELY
-        function stopVideo(container) {
-            console.log('=== RESTORE COVER COMPLETELY ===');
-            
-            const iframe = container.querySelector('.video-iframe');
-            const playButton = container.querySelector('.play-button');
-            const poster = container.querySelector('.video-poster');
-            const placeholder = container.querySelector('.video-placeholder');
-            
-            // STEP 1: HIDE VIDEO IFRAME COMPLETELY
-            iframe.src = '';
+// Stop video function
+function stopVideo(container) {
+    try {
+        logVideoState(container, 'STOPPING');
+        
+        if (!container) return;
+        
+        const iframe = container.querySelector('.video-iframe');
+        const playButton = container.querySelector('.play-button');
+        const poster = container.querySelector('.video-poster');
+        
+        // Hide video
+        if (iframe) {
             iframe.style.display = 'none';
             iframe.style.visibility = 'hidden';
             iframe.style.opacity = '0';
-            
-            // STEP 2: REMOVE PLAYING CLASS
-            container.classList.remove('playing', 'loading');
-            
-            // STEP 3: SHOW ALL COVER ELEMENTS
+            iframe.src = '';
+        }
+        
+        // Show cover elements
+        if (playButton) {
             playButton.style.display = 'flex';
-            if (poster) poster.style.display = 'block';
-            if (placeholder) placeholder.style.display = 'none'; // Keep placeholder hidden
-            
-            console.log('COVER FULLY RESTORED');
+            playButton.style.visibility = 'visible';
         }
-
-        function showError(container, message) {
-            const errorMsg = container.querySelector('.error-message');
-            
-            container.classList.remove('loading', 'playing');
-            errorMsg.textContent = message;
-            errorMsg.style.display = 'block';
-            
-            // Hide error after 3 seconds
-            setTimeout(() => {
-                errorMsg.style.display = 'none';
-            }, 3000);
+        if (poster) {
+            poster.style.display = 'block';
+            poster.style.visibility = 'visible';
         }
+        
+        // Remove playing state
+        container.classList.remove('playing');
+        
+        if (currentPlayingVideo === container) {
+            currentPlayingVideo = null;
+        }
+        
+        console.log('✅ Video stopped successfully');
+        
+    } catch (error) {
+        console.error('❌ Error stopping video:', error);
+    }
+}
 
-        // Fullscreen functionality removed since videos open in new tabs
-
-        // Initialize carousel functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const carousel = document.getElementById('videoCarousel');
-            if (!carousel) return;
-            
-            // Add smooth scrolling
-            carousel.style.scrollBehavior = 'smooth';
-            
-            // Add click event listeners to all video containers
-            const videoContainers = document.querySelectorAll('.video-container');
-            console.log('Found video containers:', videoContainers.length);
-            
-            videoContainers.forEach((container, index) => {
-                console.log(`Setting up container ${index}:`, container);
-                
-            // Add click listener to the entire container
-            container.addEventListener('click', function(e) {
-                console.log('=== CONTAINER CLICKED ===');
-                console.log('Target element:', e.target);
-                console.log('Container:', container);
-                e.preventDefault();
-                e.stopPropagation();
-                playVideo(container);
-            });
-            
-            // Add click listener to the play button specifically
-            const playButton = container.querySelector('.play-button');
-            if (playButton) {
-                playButton.addEventListener('click', function(e) {
-                    console.log('=== PLAY BUTTON CLICKED ===');
-                    e.preventDefault();
-                    e.stopPropagation();
-                    playVideo(container);
-                });
-            }
-            
-            // Add click listener to the poster image as well
-            const poster = container.querySelector('.video-poster');
-            if (poster) {
-                poster.addEventListener('click', function(e) {
-                    console.log('=== POSTER CLICKED ===');
-                    e.preventDefault();
-                    e.stopPropagation();
-                    playVideo(container);
-                });
-            }
-            });
-            
-            // Optional: Add arrow navigation
-            // You can add navigation arrows here if needed
-        });
-
-        // Handle clicks outside videos to stop playback
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.video-container')) {
-                // Clicked outside any video container
-                document.querySelectorAll('.video-container.playing').forEach(container => {
-                    // Don't stop videos when clicking on other UI elements
-                    // This is optional - remove if you want videos to keep playing
-                });
+// Initialize video system
+function initializeVideoSystem() {
+    console.log('🚀 Initializing bulletproof video system');
+    
+    // Get all video containers
+    const allVideoContainers = document.querySelectorAll('.video-container');
+    console.log(`📹 Found ${allVideoContainers.length} video containers`);
+    
+    // Log each video container
+    allVideoContainers.forEach((container, index) => {
+        const videoId = container.getAttribute('data-video-id');
+        console.log(`📺 Video ${index + 1}: ID = ${videoId}`);
+    });
+    
+    // Create intersection observer with better settings
+    videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                console.log('👀 Video came into view - auto-playing');
+                playVideo(entry.target);
             }
         });
+    }, {
+        threshold: 0.2, // Play when 20% visible
+        rootMargin: '0px 0px -100px 0px' // Start playing before fully in view
+    });
+    
+    // Observe all videos
+    allVideoContainers.forEach((container, index) => {
+        console.log(`🔍 Observing video ${index + 1}`);
+        videoObserver.observe(container);
+    });
+    
+    console.log('✅ Video system initialized successfully');
+}
 
-        // Pause videos when page becomes hidden
-        document.addEventListener('visibilitychange', function() {
-            if (document.hidden) {
-                document.querySelectorAll('.video-container.playing').forEach(container => {
-                    stopVideo(container);
-                });
-            }
-        });
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', initializeVideoSystem);
 
-// Video Section End
+// End of Video System
 
 // Draggable emoji functionality for student bricks
 const draggableEmojis = document.querySelectorAll('.brick-emoji');
