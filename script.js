@@ -5,168 +5,100 @@ const navLinks = document.querySelectorAll('.nav a');
 const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
 
 
-// BULLETPROOF VIDEO SYSTEM - AUTO PLAY ON SCROLL
+// SHOW FIRST FRAME - ONE CLICK TO PLAY
 
 let currentPlayingVideo = null;
-let videoObserver = null;
 
-// Debug function to log video state
-function logVideoState(container, action) {
+// LOAD FIRST FRAME FUNCTION
+function loadFirstFrame(container) {
     const videoId = container.getAttribute('data-video-id');
-    const isPlaying = container.classList.contains('playing');
-    console.log(`🎬 ${action} - Video ID: ${videoId}, Playing: ${isPlaying}`);
+    if (!videoId || videoId === 'PLACEHOLDER_VIDEO_ID') {
+        return;
+    }
+    
+    const iframe = container.querySelector('.video-iframe');
+    if (!iframe) return;
+    
+    // Load the preview URL to show first frame
+    iframe.src = `https://drive.google.com/file/d/${videoId}/preview`;
+    console.log(`📺 Loaded first frame for video: ${videoId}`);
 }
 
-// Play video function with extensive error handling
+// ONE CLICK PLAY FUNCTION
 function playVideo(container) {
-    try {
-        logVideoState(container, 'ATTEMPTING TO PLAY');
-        
-        // Validate container
-        if (!container) {
-            console.error('❌ No container provided');
-            return;
-        }
-        
-        // Get video ID
-        const videoId = container.getAttribute('data-video-id');
-        if (!videoId || videoId === 'PLACEHOLDER_VIDEO_ID') {
-            console.warn('⚠️ Invalid video ID:', videoId);
-            return;
-        }
-        
-        // Stop current video if different
-        if (currentPlayingVideo && currentPlayingVideo !== container) {
-            stopVideo(currentPlayingVideo);
-        }
-        
-        // If same video, don't restart
-        if (currentPlayingVideo === container) {
-            console.log('🔄 Same video already playing');
-            return;
-        }
-        
-        // Get elements with validation
-        const iframe = container.querySelector('.video-iframe');
-        const playButton = container.querySelector('.play-button');
-        const poster = container.querySelector('.video-poster');
-        
-        if (!iframe) {
-            console.error('❌ No iframe found in container');
-            return;
-        }
-        
-        // Hide cover elements
-        if (playButton) {
-            playButton.style.display = 'none';
-            playButton.style.visibility = 'hidden';
-        }
-        if (poster) {
-            poster.style.display = 'none';
-            poster.style.visibility = 'hidden';
-        }
-        
-        // Show video iframe
-        iframe.style.display = 'block';
-        iframe.style.visibility = 'visible';
-        iframe.style.opacity = '1';
-        
-        // Set video source
-        const embedUrl = `https://drive.google.com/file/d/${videoId}/preview`;
-        iframe.src = embedUrl;
-        
-        // Mark as playing
-        container.classList.add('playing');
-        currentPlayingVideo = container;
-        
-        console.log('✅ Video started successfully');
-        
-    } catch (error) {
-        console.error('❌ Error playing video:', error);
+    console.log('🎬 ONE CLICK - Playing video');
+    
+    // Get video ID
+    const videoId = container.getAttribute('data-video-id');
+    if (!videoId || videoId === 'PLACEHOLDER_VIDEO_ID') {
+        console.log('❌ Invalid video ID');
+        return;
     }
+    
+    // Stop other videos
+    if (currentPlayingVideo && currentPlayingVideo !== container) {
+        stopVideo(currentPlayingVideo);
+    }
+    
+    // Don't restart same video
+    if (currentPlayingVideo === container) {
+        return;
+    }
+    
+    // Get iframe
+    const iframe = container.querySelector('.video-iframe');
+    if (!iframe) {
+        console.error('❌ No iframe found');
+        return;
+    }
+    
+    // Video is already loaded with first frame, just mark as playing
+    container.classList.add('playing');
+    currentPlayingVideo = container;
+    
+    console.log('✅ Video playing - ONE CLICK SUCCESS');
 }
 
-// Stop video function
+// STOP FUNCTION
 function stopVideo(container) {
-    try {
-        logVideoState(container, 'STOPPING');
-        
-        if (!container) return;
-        
-        const iframe = container.querySelector('.video-iframe');
-        const playButton = container.querySelector('.play-button');
-        const poster = container.querySelector('.video-poster');
-        
-        // Hide video
-        if (iframe) {
-            iframe.style.display = 'none';
-            iframe.style.visibility = 'hidden';
-            iframe.style.opacity = '0';
-            iframe.src = '';
-        }
-        
-        // Show cover elements
-        if (playButton) {
-            playButton.style.display = 'flex';
-            playButton.style.visibility = 'visible';
-        }
-        if (poster) {
-            poster.style.display = 'block';
-            poster.style.visibility = 'visible';
-        }
-        
-        // Remove playing state
-        container.classList.remove('playing');
-        
-        if (currentPlayingVideo === container) {
-            currentPlayingVideo = null;
-        }
-        
-        console.log('✅ Video stopped successfully');
-        
-    } catch (error) {
-        console.error('❌ Error stopping video:', error);
-    }
+    console.log('⏹️ Stopping video');
+    
+    if (!container) return;
+    
+    // Remove playing state
+    container.classList.remove('playing');
+    currentPlayingVideo = null;
+    
+    console.log('✅ Video stopped');
 }
 
-// Initialize video system
-function initializeVideoSystem() {
-    console.log('🚀 Initializing bulletproof video system');
+// INITIALIZE SYSTEM
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎬 LOADING FIRST FRAMES - ONE CLICK TO PLAY');
     
     // Get all video containers
-    const allVideoContainers = document.querySelectorAll('.video-container');
-    console.log(`📹 Found ${allVideoContainers.length} video containers`);
+    const containers = document.querySelectorAll('.video-container');
+    console.log(`Found ${containers.length} video containers`);
     
-    // Log each video container
-    allVideoContainers.forEach((container, index) => {
+    // Load first frame for each video and add click listener
+    containers.forEach((container, index) => {
         const videoId = container.getAttribute('data-video-id');
-        console.log(`📺 Video ${index + 1}: ID = ${videoId}`);
-    });
-    
-    // Create intersection observer with better settings
-    videoObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                console.log('👀 Video came into view - auto-playing');
-                playVideo(entry.target);
-            }
+        console.log(`Video ${index + 1}: ${videoId}`);
+        
+        // Load first frame immediately
+        loadFirstFrame(container);
+        
+        // Click listener on container
+        container.addEventListener('click', function(e) {
+            console.log('🔥 CLICK - Playing video');
+            e.preventDefault();
+            e.stopPropagation();
+            playVideo(container);
         });
-    }, {
-        threshold: 0.2, // Play when 20% visible
-        rootMargin: '0px 0px -100px 0px' // Start playing before fully in view
     });
     
-    // Observe all videos
-    allVideoContainers.forEach((container, index) => {
-        console.log(`🔍 Observing video ${index + 1}`);
-        videoObserver.observe(container);
-    });
-    
-    console.log('✅ Video system initialized successfully');
-}
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', initializeVideoSystem);
+    console.log('✅ FIRST FRAMES LOADED - ONE CLICK TO PLAY');
+});
 
 // End of Video System
 
