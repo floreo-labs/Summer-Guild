@@ -2089,7 +2089,22 @@ blockquote {
     }
     
     .video-container {
-        height: 140px;
+        height: 160px; /* Better height for small mobile */
+    }
+    
+    /* Small mobile video optimization */
+    .video-iframe {
+        width: 100% !important;
+        height: 100% !important;
+        border: none !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Creators video on small mobile */
+    .creators-video .video-container {
+        height: 200px; /* Better height for small mobile */
     }
     
     .class-info {
@@ -2331,6 +2346,17 @@ blockquote {
         overflow-x: hidden;
     }
     
+    /* Improve touch scrolling */
+    * {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Better mobile video performance */
+    .video-iframe {
+        transform: translateZ(0); /* Hardware acceleration */
+        -webkit-transform: translateZ(0);
+    }
+    
     /* Improve video carousel on mobile */
     .carousel {
         -webkit-overflow-scrolling: touch;
@@ -2347,6 +2373,29 @@ blockquote {
     .video-container {
         border-radius: 12px;
         overflow: hidden;
+        height: 180px; /* Better mobile height */
+    }
+    
+    /* Mobile video iframe optimization */
+    .video-iframe {
+        width: 100% !important;
+        height: 100% !important;
+        border: none !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Better touch targets for mobile */
+    .video-container {
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+        touch-action: manipulation;
+    }
+    
+    /* Mobile creators video */
+    .creators-video .video-container {
+        height: 250px; /* Better mobile height for creators video */
     }
     
     /* Better spacing for mobile sections */

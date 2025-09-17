@@ -88,9 +88,17 @@ document.addEventListener('DOMContentLoaded', function() {
         // Load first frame immediately
         loadFirstFrame(container);
         
-        // Click listener on container
+        // Click and touch listener on container for mobile compatibility
         container.addEventListener('click', function(e) {
             console.log('🔥 CLICK - Playing video');
+            e.preventDefault();
+            e.stopPropagation();
+            playVideo(container);
+        });
+        
+        // Add touch event for better mobile support
+        container.addEventListener('touchend', function(e) {
+            console.log('📱 TOUCH - Playing video');
             e.preventDefault();
             e.stopPropagation();
             playVideo(container);
