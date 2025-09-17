@@ -2391,6 +2391,17 @@ blockquote {
         cursor: pointer;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
         touch-action: manipulation;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+    
+    /* Ensure videos are always visible and clickable on mobile */
+    .video-iframe {
+        pointer-events: auto !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
     }
     
     /* Mobile creators video */

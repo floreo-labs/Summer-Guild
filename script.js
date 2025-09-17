@@ -5,9 +5,17 @@ const navLinks = document.querySelectorAll('.nav a');
 const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
 
 
-// SHOW FIRST FRAME - ONE CLICK TO PLAY
+// SHOW FIRST FRAME - ONE CLICK TO PLAY - MOBILE OPTIMIZED
 
 let currentPlayingVideo = null;
+let isMobile = false;
+
+// Detect mobile device
+function detectMobile() {
+    isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+               window.innerWidth <= 768;
+    console.log('📱 Mobile detected:', isMobile);
+}
 
 // LOAD FIRST FRAME FUNCTION
 function loadFirstFrame(container) {
@@ -74,13 +82,16 @@ function stopVideo(container) {
 
 // INITIALIZE SYSTEM
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎬 LOADING FIRST FRAMES - ONE CLICK TO PLAY');
+    console.log('🎬 LOADING FIRST FRAMES - MOBILE OPTIMIZED');
+    
+    // Detect mobile device
+    detectMobile();
     
     // Get all video containers
     const containers = document.querySelectorAll('.video-container');
     console.log(`Found ${containers.length} video containers`);
     
-    // Load first frame for each video and add click listener
+    // Load first frame for each video and add listeners
     containers.forEach((container, index) => {
         const videoId = container.getAttribute('data-video-id');
         console.log(`Video ${index + 1}: ${videoId}`);
@@ -88,24 +99,35 @@ document.addEventListener('DOMContentLoaded', function() {
         // Load first frame immediately
         loadFirstFrame(container);
         
-        // Click and touch listener on container for mobile compatibility
-        container.addEventListener('click', function(e) {
-            console.log('🔥 CLICK - Playing video');
-            e.preventDefault();
-            e.stopPropagation();
-            playVideo(container);
-        });
-        
-        // Add touch event for better mobile support
-        container.addEventListener('touchend', function(e) {
-            console.log('📱 TOUCH - Playing video');
-            e.preventDefault();
-            e.stopPropagation();
-            playVideo(container);
-        });
+        // Add mobile-optimized event listeners
+        if (isMobile) {
+            // Mobile: Use touch events
+            container.addEventListener('touchend', function(e) {
+                console.log('📱 MOBILE TOUCH - Playing video');
+                e.preventDefault();
+                e.stopPropagation();
+                playVideo(container);
+            }, { passive: false });
+            
+            // Also add click for hybrid devices
+            container.addEventListener('click', function(e) {
+                console.log('📱 MOBILE CLICK - Playing video');
+                e.preventDefault();
+                e.stopPropagation();
+                playVideo(container);
+            });
+        } else {
+            // Desktop: Use click events
+            container.addEventListener('click', function(e) {
+                console.log('🖱️ DESKTOP CLICK - Playing video');
+                e.preventDefault();
+                e.stopPropagation();
+                playVideo(container);
+            });
+        }
     });
     
-    console.log('✅ FIRST FRAMES LOADED - ONE CLICK TO PLAY');
+    console.log('✅ MOBILE-OPTIMIZED SYSTEM READY - ONE TOUCH/CLICK TO PLAY');
 });
 
 // End of Video System
