@@ -718,21 +718,47 @@ body, html {
         .html5-video-player .ytp-preview,
         .html5-video-player .ytp-preview-image,
         .html5-video-player .ytp-videowall-still,
-        .html5-video-player .ytp-videowall-still-image {
+        .html5-video-player .ytp-videowall-still-image,
+        .video-container *,
+        .video-iframe *,
+        iframe * {
             background: #86E791 !important;
             background-color: #86E791 !important;
         }
         
         /* Target Google Drive video player specifically */
-        .video-iframe[src*="drive.google.com"] {
+        .video-iframe[src*="drive.google.com"],
+        .video-iframe[src*="drive.google.com"] * {
             background: #86E791 !important;
+            background-color: #86E791 !important;
         }
         
         /* Target any video element inside containers */
         .video-container video,
         .video-container .html5-video-player,
-        .video-container .ytp-cued-thumbnail-overlay {
+        .video-container .ytp-cued-thumbnail-overlay,
+        .video-container video *,
+        .video-container .html5-video-player * {
             background: #86E791 !important;
+            background-color: #86E791 !important;
+        }
+        
+        /* Force background on all elements within video containers */
+        .video-container,
+        .video-container *,
+        .video-iframe,
+        .video-iframe * {
+            background: #86E791 !important;
+            background-color: #86E791 !important;
+        }
+        
+        /* Target specific Google Drive player elements */
+        .video-container iframe,
+        .video-container iframe *,
+        iframe[src*="drive.google.com"],
+        iframe[src*="drive.google.com"] * {
+            background: #86E791 !important;
+            background-color: #86E791 !important;
         }
 
         .video-container {
