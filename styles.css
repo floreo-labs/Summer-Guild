@@ -656,6 +656,7 @@ body, html {
              gap: 2rem;
              padding: 3rem 2rem;
              scroll-behavior: smooth;
+             padding-left: 10px
          }
 
         .carousel::-webkit-scrollbar {
