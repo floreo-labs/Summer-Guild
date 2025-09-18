@@ -656,7 +656,6 @@ body, html {
              gap: 2rem;
              padding: 3rem 2rem;
              scroll-behavior: smooth;
-             padding-left: 10px
          }
 
         .carousel::-webkit-scrollbar {
@@ -2595,6 +2594,12 @@ blockquote {
     .video-container {
         border-radius: 12px;
         overflow: hidden;
+    }
+    
+    /* Mobile video iframe - remove scale to eliminate black space */
+    .video-iframe {
+        transform: scale(1) !important;
+        transform-origin: center;
     }
     
      /* Fix mobile animation clipping */
