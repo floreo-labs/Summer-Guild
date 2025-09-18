@@ -731,12 +731,12 @@ body, html {
             display: block;
             visibility: visible;
             opacity: 1;
-            background: transparent;
+            background: #000;
             margin: 0;
             padding: 0;
             outline: none;
             object-fit: cover;
-            transform: scale(1.1);
+            transform: scale(1.05);
             transform-origin: center;
         }
 
@@ -2527,6 +2527,37 @@ blockquote {
         -ms-user-select: none;
         user-select: none;
         touch-action: manipulation;
+        overflow: hidden;
+    }
+    
+    /* Fix mobile carousel container */
+    .carousel {
+        padding: 0 1rem;
+        margin: 0 -1rem;
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+        scrollbar-color: #ccc transparent;
+    }
+    
+    .carousel::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    .carousel::-webkit-scrollbar-track {
+        background: transparent;
+        margin: 0 1rem;
+    }
+    
+    .carousel::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 4px;
+    }
+    
+    .carousel::-webkit-scrollbar-thumb:hover {
+        background: #999;
     }
     
     /* Mobile video overlay styles CHANGE */
@@ -2571,11 +2602,27 @@ blockquote {
         scroll-snap-align: start;
         min-width: 280px;
         margin-right: 1rem;
+        margin-bottom: 1rem;
     }
     
     .video-container {
         border-radius: 12px;
         overflow: hidden;
+    }
+    
+    /* Fix mobile animation clipping */
+    .classes {
+        padding: 3rem 0;
+        overflow: visible;
+    }
+    
+    .classes .container {
+        overflow: visible;
+    }
+    
+    .carousel {
+        overflow: visible;
+        padding-bottom: 1rem;
     }
     
     /* Better spacing for mobile sections */
