@@ -7,7 +7,7 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
 
 // Video Section Beginning - ENHANCED IN-PLACE PLAYBACK SYSTEM
 
-        // VIDEO HANDLER
+        // VIDEO HANDLER - Enhanced for mobile one-click playback
         function playVideo(container) {
             const videoId = container.getAttribute('data-video-id');
             if (!videoId) {
@@ -33,15 +33,93 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
                 return;
             }
             
-            // Start the video
+            // Start the video with mobile-optimized approach
             const iframe = container.querySelector('.video-iframe');
             if (iframe) {
-                iframe.src = `https://drive.google.com/file/d/${videoId}/preview`;
-                container.classList.add('playing');
+                // For mobile devices, we need to handle iframe activation differently
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                                ('ontouchstart' in window) || 
+                                (navigator.maxTouchPoints > 0);
+                
+                if (isMobile) {
+                    // On mobile, first activate the iframe, then trigger play
+                    activateMobileIframe(container, iframe, videoId);
+                } else {
+                    // Desktop behavior remains the same
+                    iframe.src = `https://drive.google.com/file/d/${videoId}/preview`;
+                    container.classList.add('playing');
+                }
                 console.log('Video started playing');
             } else {
                 console.log('No iframe found in container');
             }
+        }
+
+        // Mobile iframe activation handler
+        function activateMobileIframe(container, iframe, videoId) {
+            // Add loading state
+            container.classList.add('loading');
+            
+            // Create a temporary overlay to capture the first touch
+            const overlay = document.createElement('div');
+            overlay.className = 'mobile-video-overlay';
+            overlay.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.1);
+                z-index: 10;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            
+            // Add a play button indicator
+            const playIndicator = document.createElement('div');
+            playIndicator.innerHTML = '▶';
+            playIndicator.style.cssText = `
+                font-size: 48px;
+                color: #ff4444;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+                pointer-events: none;
+                animation: pulse 1.5s ease-in-out infinite;
+            `;
+            overlay.appendChild(playIndicator);
+            
+            container.appendChild(overlay);
+            
+            // Handle the overlay click
+            const handleOverlayClick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Remove overlay
+                overlay.remove();
+                
+                // Set iframe source and add autoplay parameter for mobile
+                iframe.src = `https://drive.google.com/file/d/${videoId}/preview?autoplay=1`;
+                container.classList.remove('loading');
+                container.classList.add('playing');
+                
+                // Remove event listeners
+                overlay.removeEventListener('click', handleOverlayClick);
+                overlay.removeEventListener('touchend', handleOverlayClick);
+            };
+            
+            // Add both click and touch events
+            overlay.addEventListener('click', handleOverlayClick);
+            overlay.addEventListener('touchend', handleOverlayClick);
+            
+            // Auto-remove overlay after 5 seconds if not clicked
+            setTimeout(() => {
+                if (overlay.parentNode) {
+                    overlay.remove();
+                    container.classList.remove('loading');
+                }
+            }, 5000);
         }
 
         // STOP VIDEO
@@ -108,27 +186,46 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             const videoContainers = document.querySelectorAll('.video-container');
             
             videoContainers.forEach((container) => {
-                // Simple click handler that works on both desktop and mobile
-                container.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    playVideo(container);
-                });
+                let touchStarted = false;
                 
-                // Add touch handler for mobile with proper event handling
-                container.addEventListener('touchend', function(e) {
+                // Touch start handler for mobile
+                container.addEventListener('touchstart', function(e) {
+                    touchStarted = true;
                     e.preventDefault();
-                    e.stopPropagation();
-                    playVideo(container);
                 }, { passive: false });
+                
+                // Touch end handler for mobile - this is the main trigger
+                container.addEventListener('touchend', function(e) {
+                    if (touchStarted) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        playVideo(container);
+                        touchStarted = false;
+                    }
+                }, { passive: false });
+                
+                // Click handler for desktop and as fallback
+                container.addEventListener('click', function(e) {
+                    // Only handle click if it wasn't a touch event
+                    if (!touchStarted) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        playVideo(container);
+                    }
+                });
                 
                 // Prevent context menu on long press
                 container.addEventListener('contextmenu', function(e) {
                     e.preventDefault();
                 });
+                
+                // Handle touch cancel
+                container.addEventListener('touchcancel', function(e) {
+                    touchStarted = false;
+                });
             });
             
-            // Add keyboard controls
+            // Add keyboard controls CHANGE END VIDEOS
             document.addEventListener('keydown', function(e) {
                 if (e.code === 'Space') {
                     e.preventDefault();

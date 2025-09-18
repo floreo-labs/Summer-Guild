@@ -2529,7 +2529,43 @@ blockquote {
         touch-action: manipulation;
     }
     
-    /* Improve touch targets for mobile - removed overlay that was blocking touch */
+    /* Mobile video overlay styles CHANGE */
+    .mobile-video-overlay {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: rgba(0, 0, 0, 0.1) !important;
+        z-index: 10 !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: inherit !important;
+    }
+    
+    .mobile-video-overlay:hover {
+        background: rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    /* Pulse animation for mobile play button */
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    /* CHANGE END Improve touch targets for mobile - removed overlay that was blocking touch */
     
     .class-card {
         scroll-snap-align: start;
