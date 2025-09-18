@@ -2447,17 +2447,7 @@ blockquote {
         touch-action: manipulation;
     }
     
-    /* Improve touch targets for mobile */
-    .video-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 5;
-        pointer-events: auto;
-    }
+    /* Improve touch targets for mobile - removed overlay that was blocking touch */
     
     .class-card {
         scroll-snap-align: start;
