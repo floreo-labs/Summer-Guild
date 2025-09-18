@@ -701,7 +701,35 @@ body, html {
          /* Ensure video doesn't get clipped during hover animation */
 
         .html5-video-player {
-            background: #86E791;
+            background: #86E791 !important;
+        }
+        
+        /* Target all possible video player elements */
+        .video-iframe,
+        .video-iframe iframe,
+        .video-container iframe,
+        iframe[src*="drive.google.com"],
+        .html5-video-player,
+        .html5-video-player .video-stream,
+        .html5-video-player .ytp-cued-thumbnail-overlay,
+        .html5-video-player .ytp-preview,
+        .html5-video-player .ytp-preview-image,
+        .html5-video-player .ytp-videowall-still,
+        .html5-video-player .ytp-videowall-still-image {
+            background: #86E791 !important;
+            background-color: #86E791 !important;
+        }
+        
+        /* Target Google Drive video player specifically */
+        .video-iframe[src*="drive.google.com"] {
+            background: #86E791 !important;
+        }
+        
+        /* Target any video element inside containers */
+        .video-container video,
+        .video-container .html5-video-player,
+        .video-container .ytp-cued-thumbnail-overlay {
+            background: #86E791 !important;
         }
 
         .video-container {
@@ -2523,6 +2551,11 @@ blockquote {
         left: 55px !important;
     }
     
+    /* Move red circle higher on mobile */
+    .draggable-bg[style*="top: 260px"] {
+        top: 200px !important;
+    }
+    
     /* Additional mobile positioning for very small screens - more compact */
     @media (max-width: 480px) {
         .draggable-bg[style*="left: 80px"] {
@@ -2551,6 +2584,11 @@ blockquote {
         
         .draggable-bg[style*="left: 540px"] {
             left: 35px !important;
+        }
+        
+        /* Move red circle even higher on small mobile */
+        .draggable-bg[style*="top: 260px"] {
+            top: 180px !important;
         }
     }
     

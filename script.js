@@ -46,7 +46,14 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
                 } else {
                     // Desktop behavior
                     iframe.src = `https://drive.google.com/file/d/${videoId}/preview`;
+                    iframe.style.background = '#86E791';
+                    iframe.style.backgroundColor = '#86E791';
                     container.classList.add('playing');
+                    
+                    // Set background color after iframe loads
+                    setTimeout(() => {
+                        setVideoBackgroundColor(iframe);
+                    }, 500);
                 }
                 console.log('Video started playing');
             } else {
@@ -77,7 +84,7 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
                 width: 100%;
                 height: 100%;
                 border: none;
-                background: #000;
+                background: #86E791;
                 object-fit: contain;
                 transform: scale(1);
                 transform-origin: center;
@@ -89,6 +96,11 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             // Mark as playing immediately
             container.classList.remove('loading');
             container.classList.add('playing');
+            
+            // Set background color for any video elements that might load
+            setTimeout(() => {
+                setVideoBackgroundColor(newIframe);
+            }, 500);
             
             // Try to trigger autoplay on mobile
             setTimeout(() => {
@@ -153,6 +165,41 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
                 setTimeout(() => {
                     errorMsg.style.display = 'none';
                 }, 3000);
+            }
+        }
+
+        // Function to set video background color
+        function setVideoBackgroundColor(iframe) {
+            try {
+                // Set iframe background
+                iframe.style.background = '#86E791';
+                iframe.style.backgroundColor = '#86E791';
+                
+                // Try to access iframe content and set background
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                if (iframeDoc) {
+                    iframeDoc.body.style.background = '#86E791';
+                    iframeDoc.body.style.backgroundColor = '#86E791';
+                    
+                    // Target video elements
+                    const videos = iframeDoc.querySelectorAll('video');
+                    videos.forEach(video => {
+                        video.style.background = '#86E791';
+                        video.style.backgroundColor = '#86E791';
+                    });
+                    
+                    // Target any divs that might be video containers
+                    const divs = iframeDoc.querySelectorAll('div');
+                    divs.forEach(div => {
+                        if (div.style.background === 'black' || div.style.backgroundColor === 'black' || 
+                            div.style.background === '#000' || div.style.backgroundColor === '#000') {
+                            div.style.background = '#86E791';
+                            div.style.backgroundColor = '#86E791';
+                        }
+                    });
+                }
+            } catch (e) {
+                console.log('Cannot access iframe content due to CORS policy');
             }
         }
 
