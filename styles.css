@@ -1704,7 +1704,10 @@ blockquote {
         height: 280px;
         margin: 0 auto;
         padding: 15px;
-        overflow: hidden;
+        overflow: visible;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
     }
     
     .draggable-bg {
@@ -2027,7 +2030,8 @@ blockquote {
     .circles-container {
         height: 220px;
         padding: 10px;
-        max-width: 300px;
+        max-width: 320px;
+        overflow: visible;
     }
     
     .draggable-bg {
@@ -2396,34 +2400,63 @@ blockquote {
         max-width: none;
     }
     
-    /* Mobile-specific circle positioning - only apply on very small screens */
+    /* Mobile-specific circle positioning - move circles to left and ensure visibility */
+    .draggable-bg[style*="left: 80px"] {
+        left: 10px !important;
+    }
+    
+    .draggable-bg[style*="left: 320px"] {
+        left: 120px !important;
+    }
+    
+    .draggable-bg[style*="left: 150px"] {
+        left: 40px !important;
+    }
+    
+    .draggable-bg[style*="left: 380px"] {
+        left: 140px !important;
+    }
+    
+    .draggable-bg[style*="left: 420px"] {
+        left: 160px !important;
+    }
+    
+    .draggable-bg[style*="left: 220px"] {
+        left: 80px !important;
+    }
+    
+    .draggable-bg[style*="left: 540px"] {
+        left: 180px !important;
+    }
+    
+    /* Additional mobile positioning for very small screens */
     @media (max-width: 480px) {
         .draggable-bg[style*="left: 80px"] {
-            left: 20px !important;
+            left: 5px !important;
         }
         
         .draggable-bg[style*="left: 320px"] {
-            left: 180px !important;
+            left: 100px !important;
         }
         
         .draggable-bg[style*="left: 150px"] {
-            left: 60px !important;
+            left: 30px !important;
         }
         
         .draggable-bg[style*="left: 380px"] {
-            left: 200px !important;
-        }
-        
-        .draggable-bg[style*="left: 420px"] {
-            left: 220px !important;
-        }
-        
-        .draggable-bg[style*="left: 220px"] {
             left: 120px !important;
         }
         
+        .draggable-bg[style*="left: 420px"] {
+            left: 140px !important;
+        }
+        
+        .draggable-bg[style*="left: 220px"] {
+            left: 70px !important;
+        }
+        
         .draggable-bg[style*="left: 540px"] {
-            left: 250px !important;
+            left: 160px !important;
         }
     }
     
