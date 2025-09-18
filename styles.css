@@ -735,12 +735,12 @@ body, html {
              display: block;
              visibility: visible;
              opacity: 1;
-             background: #000;
+             background: #86E791;
              margin: 0;
              padding: 0;
              outline: none;
-             object-fit: cover;
-             transform: scale(1.15);
+             object-fit: contain;
+             transform: scale(1);
              transform-origin: center;
          }
 
@@ -1440,12 +1440,12 @@ blockquote {
     display: block;
     visibility: visible;
     opacity: 1;
-    background: transparent;
+    background: #86E791;
     margin: 0;
     padding: 0;
     outline: none;
-    object-fit: cover;
-    transform: scale(1.1);
+    object-fit: contain;
+    transform: scale(1);
     transform-origin: center;
 }
 
@@ -2599,9 +2599,11 @@ blockquote {
         overflow: hidden;
     }
     
-    /* Mobile video iframe - use same scaling as desktop to fill frame */
+    /* Mobile video iframe - show entire video including controls */
     .video-iframe {
-        transform: scale(1.15) !important;
+        transform: scale(1) !important;
+        object-fit: contain !important;
+        background: #86E791 !important;
         transform-origin: center;
     }
     

@@ -78,8 +78,8 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
                 height: 100%;
                 border: none;
                 background: #000;
-                object-fit: cover;
-                transform: scale(1.15);
+                object-fit: contain;
+                transform: scale(1);
                 transform-origin: center;
             `;
             
