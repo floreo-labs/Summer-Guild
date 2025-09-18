@@ -24,8 +24,8 @@ body, html {
 .btn-primary:active,
 .btn-primary:focus {
   outline: none;
-  box-shadow: 0 8px 25px rgba(97, 84, 224, 0.3); /* purple shadow for focus */
-  background: #6154E0; /* purple background for focus */
+  box-shadow: 0 8px 25px rgba(5, 12, 255, 0.3); /* blue shadow for focus */
+  background: #050CFF; /* blue background for focus */
   border-radius: 50px;
   padding: 1rem 2rem;
   font-size: 1rem;
@@ -330,7 +330,7 @@ body, html {
 }
 
 .btn-primary {
-    background: #6154E0;
+    background: #050CFF;
     color: white;
     border: none;
     padding: 1rem 2rem;
@@ -369,6 +369,36 @@ body, html {
     color: white;
     border-color: #FF532E;
     transform: translateY(-2px);
+}
+
+.btn-cta {
+    background: #6154E0;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-cta:hover {
+    background: #FF532E;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 83, 46, 0.3);
+}
+
+.btn-cta:active,
+.btn-cta:focus {
+    outline: none;
+    box-shadow: 0 8px 25px rgba(97, 84, 224, 0.3);
+    background: #6154E0;
+    border-radius: 50px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
 }
 
 /* Geometric Shapes */
@@ -1099,6 +1129,8 @@ blockquote {
     padding-right: 17px;
 }
 
+
+
 .brick-content blockquote {
     font-style: italic;
     color: #555;
@@ -1280,11 +1312,23 @@ blockquote {
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
+    object-position: center top;
     border: 4px solid #050CFF;
     transition: transform 0.3s ease;
 }
 
+/* Zoom in specifically for Juanita's image */
+.creator-image[src*="Juanita"] {
+    object-fit: cover;
+    object-position: center 0%;
+    transform: scale(1.0);
+}
+
 .creator-card:hover .creator-image {
+    transform: scale(1.05);
+}
+
+.creator-card:hover .creator-image[src*="Juanita"] {
     transform: scale(1.05);
 }
 
@@ -1649,11 +1693,16 @@ blockquote {
     }
     
     /* Better touch targets */
-    .btn-primary, .btn-secondary {
+    .btn-primary, .btn-secondary, .btn-cta {
         min-height: 44px;
         padding: 12px 24px;
         font-size: 1rem;
         border-radius: 8px;
+    }
+    
+    /* Ensure first button stays blue on mobile */
+    .btn-primary {
+        background: #050CFF !important;
     }
     
     .mobile-nav a {
@@ -1912,7 +1961,7 @@ blockquote {
         gap: 1rem;
     }
     
-    .btn-primary, .btn-secondary {
+    .btn-primary, .btn-secondary, .btn-cta {
         width: 100%;
         max-width: 300px;
         padding: 0.8rem 1.5rem;
@@ -2258,7 +2307,7 @@ blockquote {
         font-size: 1rem;
     }
     
-    .btn-primary, .btn-secondary {
+    .btn-primary, .btn-secondary, .btn-cta {
         padding: 0.7rem 1.2rem;
         font-size: 0.9rem;
     }
@@ -2315,7 +2364,8 @@ blockquote {
     }
     
     .btn-primary:hover,
-    .btn-secondary:hover {
+    .btn-secondary:hover,
+    .btn-cta:hover {
         transform: none;
     }
     
@@ -2340,7 +2390,8 @@ blockquote {
     
     /* Better touch feedback */
     .btn-primary:active,
-    .btn-secondary:active {
+    .btn-secondary:active,
+    .btn-cta:active {
         transform: scale(0.98);
     }
     
