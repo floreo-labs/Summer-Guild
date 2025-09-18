@@ -5,132 +5,170 @@ const navLinks = document.querySelectorAll('.nav a');
 const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
 
 
-// SHOW FIRST FRAME - ONE CLICK TO PLAY - MOBILE OPTIMIZED
+// Video Section Beginning - ENHANCED IN-PLACE PLAYBACK SYSTEM
 
-let currentPlayingVideo = null;
-let isMobile = false;
-
-// Detect mobile device
-function detectMobile() {
-    isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-               window.innerWidth <= 768;
-    console.log('📱 Mobile detected:', isMobile);
-}
-
-// LOAD FIRST FRAME FUNCTION
-function loadFirstFrame(container) {
-    const videoId = container.getAttribute('data-video-id');
-    if (!videoId || videoId === 'PLACEHOLDER_VIDEO_ID') {
-        return;
-    }
-    
-    const iframe = container.querySelector('.video-iframe');
-    if (!iframe) return;
-    
-    // Load the preview URL to show first frame
-    iframe.src = `https://drive.google.com/file/d/${videoId}/preview`;
-    console.log(`📺 Loaded first frame for video: ${videoId}`);
-}
-
-// ONE CLICK PLAY FUNCTION
-function playVideo(container) {
-    console.log('🎬 ONE CLICK - Playing video');
-    
-    // Get video ID
-    const videoId = container.getAttribute('data-video-id');
-    if (!videoId || videoId === 'PLACEHOLDER_VIDEO_ID') {
-        console.log('❌ Invalid video ID');
-        return;
-    }
-    
-    // Stop other videos
-    if (currentPlayingVideo && currentPlayingVideo !== container) {
-        stopVideo(currentPlayingVideo);
-    }
-    
-    // Don't restart same video
-    if (currentPlayingVideo === container) {
-        return;
-    }
-    
-    // Get iframe
-    const iframe = container.querySelector('.video-iframe');
-    if (!iframe) {
-        console.error('❌ No iframe found');
-        return;
-    }
-    
-    // Video is already loaded with first frame, just mark as playing
-    container.classList.add('playing');
-    currentPlayingVideo = container;
-    
-    console.log('✅ Video playing - ONE CLICK SUCCESS');
-}
-
-// STOP FUNCTION
-function stopVideo(container) {
-    console.log('⏹️ Stopping video');
-    
-    if (!container) return;
-    
-    // Remove playing state
-    container.classList.remove('playing');
-    currentPlayingVideo = null;
-    
-    console.log('✅ Video stopped');
-}
-
-// INITIALIZE SYSTEM
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎬 LOADING FIRST FRAMES - MOBILE OPTIMIZED');
-    
-    // Detect mobile device
-    detectMobile();
-    
-    // Get all video containers
-    const containers = document.querySelectorAll('.video-container');
-    console.log(`Found ${containers.length} video containers`);
-    
-    // Load first frame for each video and add listeners
-    containers.forEach((container, index) => {
-        const videoId = container.getAttribute('data-video-id');
-        console.log(`Video ${index + 1}: ${videoId}`);
-        
-        // Load first frame immediately
-        loadFirstFrame(container);
-        
-        // Add mobile-optimized event listeners
-        if (isMobile) {
-            // Mobile: Use touch events
-            container.addEventListener('touchend', function(e) {
-                console.log('📱 MOBILE TOUCH - Playing video');
-                e.preventDefault();
-                e.stopPropagation();
-                playVideo(container);
-            }, { passive: false });
+        // VIDEO HANDLER
+        function playVideo(container) {
+            const videoId = container.getAttribute('data-video-id');
+            if (!videoId) return;
             
-            // Also add click for hybrid devices
-            container.addEventListener('click', function(e) {
-                console.log('📱 MOBILE CLICK - Playing video');
-                e.preventDefault();
-                e.stopPropagation();
-                playVideo(container);
+            // Check if this video is already playing
+            const wasAlreadyPlaying = container.classList.contains('playing');
+            
+            // Stop all other videos
+            document.querySelectorAll('.video-container.playing').forEach(other => {
+                if (other !== container) {
+                    stopVideo(other);
+                }
             });
-        } else {
-            // Desktop: Use click events
-            container.addEventListener('click', function(e) {
-                console.log('🖱️ DESKTOP CLICK - Playing video');
-                e.preventDefault();
-                e.stopPropagation();
-                playVideo(container);
-            });
+            
+            // If this video was already playing, just stop it
+            if (wasAlreadyPlaying) {
+                stopVideo(container);
+                return;
+            }
+            
+            // Start the video
+            const iframe = container.querySelector('.video-iframe');
+            iframe.src = `https://drive.google.com/file/d/${videoId}/preview`;
+            container.classList.add('playing');
         }
-    });
-    
-    console.log('✅ MOBILE-OPTIMIZED SYSTEM READY - ONE TOUCH/CLICK TO PLAY');
-});
 
-// End of Video System
+        // STOP VIDEO
+        function stopVideo(container) {
+            const iframe = container.querySelector('.video-iframe');
+            const videoId = container.getAttribute('data-video-id');
+            
+            container.classList.remove('playing', 'loading');
+            
+            // Reset iframe to initial state
+            if (iframe && videoId) {
+                iframe.src = `https://drive.google.com/file/d/${videoId}/preview`;
+            }
+        }
+
+        // FULLSCREEN FUNCTIONALITY
+        function toggleFullscreen(container) {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) {
+                    container.webkitRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+
+        // OPEN IN GOOGLE DRIVE
+        function openInGoogleDrive(container) {
+            const videoId = container.getAttribute('data-video-id');
+            if (videoId) {
+                const driveUrl = `https://drive.google.com/file/d/${videoId}/view`;
+                window.open(driveUrl, '_blank');
+            }
+        }
+
+        function showError(container, message) {
+            const errorMsg = container.querySelector('.error-message');
+            if (errorMsg) {
+                container.classList.remove('loading', 'playing');
+                errorMsg.textContent = message;
+                errorMsg.style.display = 'block';
+                
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Initialize carousel functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.getElementById('videoCarousel');
+            if (!carousel) return;
+            
+            // Add smooth scrolling
+            carousel.style.scrollBehavior = 'smooth';
+            
+            // Add click event listeners to all video containers
+            const videoContainers = document.querySelectorAll('.video-container');
+            
+            videoContainers.forEach((container) => {
+                container.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    playVideo(container);
+                });
+            });
+            
+            // Add keyboard controls
+            document.addEventListener('keydown', function(e) {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    
+                    const playingVideo = document.querySelector('.video-container.playing');
+                    if (playingVideo) {
+                        stopVideo(playingVideo);
+                    } else {
+                        const firstVisibleVideo = document.querySelector('.video-container');
+                        if (firstVisibleVideo) {
+                            playVideo(firstVisibleVideo);
+                        }
+                    }
+                }
+            });
+            
+            // Optional: Add arrow navigation
+            // You can add navigation arrows here if needed
+        });
+
+        // Handle clicks outside videos to stop playback
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.video-container')) {
+                // Clicked outside any video container
+                document.querySelectorAll('.video-container.playing').forEach(container => {
+                    // Don't stop videos when clicking on other UI elements
+                    // This is optional - remove if you want videos to keep playing
+                });
+            }
+        });
+
+        // Pause videos when page becomes hidden
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                document.querySelectorAll('.video-container.playing').forEach(container => {
+                    stopVideo(container);
+                });
+            }
+        });
+
+        // Handle fullscreen changes
+        document.addEventListener('fullscreenchange', function() {
+            console.log('=== FULLSCREEN CHANGE ===');
+            if (!document.fullscreenElement) {
+                // Exited fullscreen - ensure all videos are in normal state
+                document.querySelectorAll('.video-container').forEach(container => {
+                    container.classList.remove('fullscreen');
+                });
+            }
+        });
+
+        // Handle webkit fullscreen changes
+        document.addEventListener('webkitfullscreenchange', function() {
+            console.log('=== WEBKIT FULLSCREEN CHANGE ===');
+            if (!document.webkitFullscreenElement) {
+                // Exited fullscreen - ensure all videos are in normal state
+                document.querySelectorAll('.video-container').forEach(container => {
+                    container.classList.remove('fullscreen');
+                });
+            }
+        });
+
+// Video Section End
 
 // Draggable emoji functionality for student bricks
 const draggableEmojis = document.querySelectorAll('.brick-emoji');
