@@ -700,6 +700,10 @@ body, html {
          
          /* Ensure video doesn't get clipped during hover animation */
 
+        .html5-video-player {
+            background: #86E791;
+        }
+
         .video-container {
             position: relative;
             width: 100%;
