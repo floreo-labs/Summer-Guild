@@ -506,7 +506,7 @@ body, html {
 .program-description {
     max-width: 1000px;
     margin: 0 auto 4rem;
-    text-align: justify;
+    text-align: center;
 }
 
 .program-description p {
