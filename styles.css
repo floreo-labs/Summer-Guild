@@ -703,44 +703,14 @@ body, html {
          
          /* Ensure video doesn't get clipped during hover animation */
 
-        .html5-video-player {
-            background: #86E791 !important;
-        }
         
-        /* Target all possible video player elements */
-        .video-iframe,
-        .video-iframe iframe,
-        .video-container iframe,
-        iframe[src*="drive.google.com"],
-        .html5-video-player,
-        .html5-video-player .video-stream,
-        .html5-video-player .ytp-cued-thumbnail-overlay,
-        .html5-video-player .ytp-preview,
-        .html5-video-player .ytp-preview-image,
-        .html5-video-player .ytp-videowall-still,
-        .html5-video-player .ytp-videowall-still-image {
-            background: #86E791 !important;
-            background-color: #86E791 !important;
-        }
-        
-        /* Target Google Drive video player specifically */
-        .video-iframe[src*="drive.google.com"] {
-            background: #86E791 !important;
-        }
-        
-        /* Target any video element inside containers */
-        .video-container video,
-        .video-container .html5-video-player,
-        .video-container .ytp-cued-thumbnail-overlay {
-            background: #86E791 !important;
-        }
 
         .video-container {
             position: relative;
             width: 100%;
             height: 200px;
             overflow: hidden;
-            background: #86E791;
+            background: #000;
             cursor: pointer;
             margin: 0;
             padding: 0;
@@ -780,7 +750,7 @@ body, html {
              display: block;
              visibility: visible;
              opacity: 1;
-             background: #86E791;
+             background: #000;
              margin: 0;
              padding: 0;
              outline: none;
@@ -2662,7 +2632,7 @@ blockquote {
     .video-iframe {
         transform: scale(1) !important;
         object-fit: contain !important;
-        background: #86E791 !important;
+        background: #000 !important;
         transform-origin: center;
     }
     
