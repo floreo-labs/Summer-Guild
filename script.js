@@ -10,7 +10,12 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
         // VIDEO HANDLER
         function playVideo(container) {
             const videoId = container.getAttribute('data-video-id');
-            if (!videoId) return;
+            if (!videoId) {
+                console.log('No video ID found for container');
+                return;
+            }
+            
+            console.log('Playing video with ID:', videoId);
             
             // Check if this video is already playing
             const wasAlreadyPlaying = container.classList.contains('playing');
@@ -30,8 +35,13 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             
             // Start the video
             const iframe = container.querySelector('.video-iframe');
-            iframe.src = `https://drive.google.com/file/d/${videoId}/preview`;
-            container.classList.add('playing');
+            if (iframe) {
+                iframe.src = `https://drive.google.com/file/d/${videoId}/preview`;
+                container.classList.add('playing');
+                console.log('Video started playing');
+            } else {
+                console.log('No iframe found in container');
+            }
         }
 
         // STOP VIDEO
@@ -98,10 +108,23 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             const videoContainers = document.querySelectorAll('.video-container');
             
             videoContainers.forEach((container) => {
+                // Simple click handler that works on both desktop and mobile
                 container.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     playVideo(container);
+                });
+                
+                // Add touch handler for mobile with proper event handling
+                container.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    playVideo(container);
+                }, { passive: false });
+                
+                // Prevent context menu on long press
+                container.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
                 });
             });
             

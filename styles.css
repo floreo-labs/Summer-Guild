@@ -667,6 +667,12 @@ body, html {
             padding: 0;
             border: none;
             border-radius: 20px 20px 0 0;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         /* Poster image styling */
@@ -1694,10 +1700,14 @@ blockquote {
     /* Circles container mobile */
     .circles-container {
         width: 100%;
-        max-width: 400px;
-        height: 300px;
+        max-width: 350px;
+        height: 280px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 15px;
+        overflow: visible;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
     }
     
     .draggable-bg {
@@ -2018,28 +2028,34 @@ blockquote {
     
     /* Circles small mobile */
     .circles-container {
-        height: 250px;
-        padding: 15px;
+        height: 220px;
+        padding: 10px;
+        max-width: 320px;
+        overflow: visible;
     }
     
     .draggable-bg {
-        max-width: 150px;
+        max-width: 120px;
     }
     
     .circle-large {
-        min-width: 120px;
+        min-width: 100px !important;
+        max-width: 120px !important;
     }
     
     .circle-medium {
-        min-width: 100px;
+        min-width: 80px !important;
+        max-width: 100px !important;
     }
     
     .circle-small {
-        min-width: 80px;
+        min-width: 60px !important;
+        max-width: 80px !important;
     }
     
     .circle-tiny {
-        min-width: 50px;
+        min-width: 40px !important;
+        max-width: 60px !important;
     }
     
     /* Section headers small mobile */
@@ -2363,12 +2379,106 @@ blockquote {
         overflow-x: hidden;
     }
     
+    /* Hero section mobile optimizations */
+    .hero {
+        overflow: hidden;
+    }
+    
+    .hero-visual {
+        overflow: hidden;
+    }
+    
+    /* Ensure circles don't cause horizontal scroll */
+    .circles-container {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Adjust circle positioning for mobile */
+    .draggable-bg {
+        position: absolute;
+        max-width: none;
+    }
+    
+    /* Mobile-specific circle positioning - move circles to left and ensure visibility */
+    .draggable-bg[style*="left: 80px"] {
+        left: 10px !important;
+    }
+    
+    .draggable-bg[style*="left: 320px"] {
+        left: 120px !important;
+    }
+    
+    .draggable-bg[style*="left: 150px"] {
+        left: 40px !important;
+    }
+    
+    .draggable-bg[style*="left: 380px"] {
+        left: 140px !important;
+    }
+    
+    .draggable-bg[style*="left: 420px"] {
+        left: 160px !important;
+    }
+    
+    .draggable-bg[style*="left: 220px"] {
+        left: 80px !important;
+    }
+    
+    .draggable-bg[style*="left: 540px"] {
+        left: 180px !important;
+    }
+    
+    /* Additional mobile positioning for very small screens */
+    @media (max-width: 480px) {
+        .draggable-bg[style*="left: 80px"] {
+            left: 5px !important;
+        }
+        
+        .draggable-bg[style*="left: 320px"] {
+            left: 100px !important;
+        }
+        
+        .draggable-bg[style*="left: 150px"] {
+            left: 30px !important;
+        }
+        
+        .draggable-bg[style*="left: 380px"] {
+            left: 120px !important;
+        }
+        
+        .draggable-bg[style*="left: 420px"] {
+            left: 140px !important;
+        }
+        
+        .draggable-bg[style*="left: 220px"] {
+            left: 70px !important;
+        }
+        
+        .draggable-bg[style*="left: 540px"] {
+            left: 160px !important;
+        }
+    }
+    
     /* Improve video carousel on mobile */
     .carousel {
         -webkit-overflow-scrolling: touch;
         scroll-snap-type: x mandatory;
         padding: 0 1rem;
     }
+    
+    /* Mobile video container improvements */
+    .video-container {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        touch-action: manipulation;
+    }
+    
+    /* Improve touch targets for mobile - removed overlay that was blocking touch */
     
     .class-card {
         scroll-snap-align: start;
