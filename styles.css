@@ -1093,11 +1093,12 @@ body, html {
     position: relative;
     background: white;
     border-radius: 20px;
-    padding: 2.5rem 3rem;
+    padding: 2rem 2.5rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 70%;
-    min-height: 120px;
+    width: fit-content;
+    max-width: 70%;
+    min-height: auto;
     display: flex;
     align-items: center;
 }
@@ -1188,14 +1189,14 @@ blockquote {
 
 /* Emoji positioning for left bricks - emoji in top-left corner (closer to screen edge) */
 .brick-left .brick-emoji {
-    top: -20px;
-    left: -15px;
+    top: -25px;
+    left: -20px;
 }
 
 /* Emoji positioning for right bricks - emoji in top-right corner (closer to screen edge) */
 .brick-right .brick-emoji {
-    top: -22px;
-    right: -20px;
+    top: -25px;
+    right: -25px;
 }
 
 /* Different animation delays for each emoji */
@@ -1238,9 +1239,10 @@ blockquote {
 /* Responsive design for brick layout */
 @media (max-width: 768px) {
     .student-brick {
-        width: 90%;
-        padding: 2rem;
-        min-height: 100px;
+        width: fit-content;
+        max-width: 90%;
+        padding: 1.5rem 2rem;
+        min-height: auto;
     }
     
     .brick-content {
@@ -1252,20 +1254,21 @@ blockquote {
     }
     
     .brick-left .brick-emoji {
-        top: 15px;
-        left: 15px;
+        top: -20px;
+        left: -15px;
     }
     
     .brick-right .brick-emoji {
-        top: 15px;
-        right: 15px;
+        top: -20px;
+        right: -20px;
     }
 }
 
 @media (max-width: 480px) {
     .student-brick {
-        width: 95%;
-        padding: 1.5rem;
+        width: fit-content;
+        max-width: 95%;
+        padding: 1.2rem 1.5rem;
     }
     
     .brick-content blockquote {
@@ -1904,13 +1907,13 @@ blockquote {
     }
     
     .brick-left .brick-emoji {
-        top: 15px;
-        left: 15px;
+        top: -20px;
+        left: -15px;
     }
     
     .brick-right .brick-emoji {
-        top: 15px;
-        right: 15px;
+        top: -20px;
+        right: -20px;
     }
     
     /* Creators section mobile */
@@ -2253,13 +2256,13 @@ blockquote {
     }
     
     .brick-left .brick-emoji {
-        top: 10px;
-        left: 10px;
+        top: -18px;
+        left: -12px;
     }
     
     .brick-right .brick-emoji {
-        top: 10px;
-        right: 10px;
+        top: -18px;
+        right: -18px;
     }
     
     /* Creators section small mobile */
@@ -2455,63 +2458,63 @@ blockquote {
         max-width: none;
     }
     
-    /* Mobile-specific circle positioning - move circles to left and ensure visibility */
+    /* Mobile-specific circle positioning - move circles to left side, allow intersections */
     .draggable-bg[style*="left: 80px"] {
-        left: 10px !important;
+        left: 5px !important;
     }
     
     .draggable-bg[style*="left: 320px"] {
-        left: 120px !important;
+        left: 25px !important;
     }
     
     .draggable-bg[style*="left: 150px"] {
-        left: 40px !important;
+        left: 15px !important;
     }
     
     .draggable-bg[style*="left: 380px"] {
-        left: 140px !important;
+        left: 35px !important;
     }
     
     .draggable-bg[style*="left: 420px"] {
-        left: 160px !important;
+        left: 45px !important;
     }
     
     .draggable-bg[style*="left: 220px"] {
-        left: 80px !important;
+        left: 20px !important;
     }
     
     .draggable-bg[style*="left: 540px"] {
-        left: 180px !important;
+        left: 55px !important;
     }
     
-    /* Additional mobile positioning for very small screens */
+    /* Additional mobile positioning for very small screens - more compact */
     @media (max-width: 480px) {
         .draggable-bg[style*="left: 80px"] {
-            left: 5px !important;
+            left: 2px !important;
         }
         
         .draggable-bg[style*="left: 320px"] {
-            left: 100px !important;
+            left: 15px !important;
         }
         
         .draggable-bg[style*="left: 150px"] {
-            left: 30px !important;
+            left: 8px !important;
         }
         
         .draggable-bg[style*="left: 380px"] {
-            left: 120px !important;
+            left: 22px !important;
         }
         
         .draggable-bg[style*="left: 420px"] {
-            left: 140px !important;
+            left: 28px !important;
         }
         
         .draggable-bg[style*="left: 220px"] {
-            left: 70px !important;
+            left: 12px !important;
         }
         
         .draggable-bg[style*="left: 540px"] {
-            left: 160px !important;
+            left: 35px !important;
         }
     }
     
