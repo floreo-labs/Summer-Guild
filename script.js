@@ -45,7 +45,7 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
                     handleMobileVideoPlay(container, iframe, videoId);
                 } else {
                     // Desktop behavior
-                    iframe.src = `https://drive.google.com/file/d/${videoId}/preview?usp=sharing&embedded=true&bgcolor=86E791`;
+                    iframe.src = `https://drive.google.com/file/d/${videoId}/preview`;
                     iframe.style.background = '#86E791';
                     iframe.style.backgroundColor = '#86E791';
                     container.classList.add('playing');
@@ -74,7 +74,7 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             const newIframe = document.createElement('iframe');
             newIframe.className = 'video-iframe';
             // Use the direct video URL format that works better on mobile
-            newIframe.src = `https://drive.google.com/file/d/${videoId}/preview?usp=sharing&embedded=true&bgcolor=86E791`;
+            newIframe.src = `https://drive.google.com/file/d/${videoId}/preview?usp=sharing&embedded=true`;
             newIframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
             newIframe.allowFullscreen = true;
             newIframe.style.cssText = `
@@ -181,24 +181,6 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
                     iframeDoc.body.style.background = '#86E791';
                     iframeDoc.body.style.backgroundColor = '#86E791';
                     
-                    // Inject CSS to force background color
-                    const style = iframeDoc.createElement('style');
-                    style.textContent = `
-                        * {
-                            background: #86E791 !important;
-                            background-color: #86E791 !important;
-                        }
-                        body, html {
-                            background: #86E791 !important;
-                            background-color: #86E791 !important;
-                        }
-                        video, iframe, div, span, canvas {
-                            background: #86E791 !important;
-                            background-color: #86E791 !important;
-                        }
-                    `;
-                    iframeDoc.head.appendChild(style);
-                    
                     // Target video elements
                     const videos = iframeDoc.querySelectorAll('video');
                     videos.forEach(video => {
@@ -209,15 +191,11 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
                     // Target any divs that might be video containers
                     const divs = iframeDoc.querySelectorAll('div');
                     divs.forEach(div => {
-                        div.style.background = '#86E791';
-                        div.style.backgroundColor = '#86E791';
-                    });
-                    
-                    // Target all elements
-                    const allElements = iframeDoc.querySelectorAll('*');
-                    allElements.forEach(element => {
-                        element.style.background = '#86E791';
-                        element.style.backgroundColor = '#86E791';
+                        if (div.style.background === 'black' || div.style.backgroundColor === 'black' || 
+                            div.style.background === '#000' || div.style.backgroundColor === '#000') {
+                            div.style.background = '#86E791';
+                            div.style.backgroundColor = '#86E791';
+                        }
                     });
                 }
             } catch (e) {
@@ -225,49 +203,10 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             }
         }
 
-        // Function to continuously apply background color to videos
-        function applyVideoBackgrounds() {
-            const videoContainers = document.querySelectorAll('.video-container');
-            videoContainers.forEach(container => {
-                const iframe = container.querySelector('.video-iframe');
-                if (iframe) {
-                    iframe.style.background = '#86E791';
-                    iframe.style.backgroundColor = '#86E791';
-                    setVideoBackgroundColor(iframe);
-                }
-            });
-        }
-
         // Initialize carousel functionality
         document.addEventListener('DOMContentLoaded', function() {
             const carousel = document.getElementById('videoCarousel');
             if (!carousel) return;
-            
-            // Apply video backgrounds immediately
-            applyVideoBackgrounds();
-            
-            // Set up MutationObserver to watch for changes
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.type === 'childList' || mutation.type === 'attributes') {
-                        applyVideoBackgrounds();
-                    }
-                });
-            });
-            
-            // Observe all video containers
-            const videoContainers = document.querySelectorAll('.video-container');
-            videoContainers.forEach(container => {
-                observer.observe(container, {
-                    childList: true,
-                    subtree: true,
-                    attributes: true,
-                    attributeFilter: ['style', 'class']
-                });
-            });
-            
-            // Apply backgrounds every 2 seconds as a fallback
-            setInterval(applyVideoBackgrounds, 2000);
             
             // Add smooth scrolling
             carousel.style.scrollBehavior = 'smooth';
