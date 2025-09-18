@@ -54,12 +54,12 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             }
         }
 
-        // Enhanced mobile video handler
+        // Simplified mobile video handler - direct iframe replacement
         function handleMobileVideoPlay(container, iframe, videoId) {
             // Add loading state
             container.classList.add('loading');
             
-            // Create a more direct iframe with better mobile support
+            // Create a new iframe with mobile-optimized URL
             const newIframe = document.createElement('iframe');
             newIframe.className = 'video-iframe';
             newIframe.src = `https://drive.google.com/file/d/${videoId}/preview?usp=sharing`;
@@ -74,25 +74,16 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
                 border: none;
                 background: #000;
                 object-fit: cover;
-                transform: scale(1.05);
+                transform: scale(1.15);
                 transform-origin: center;
             `;
             
             // Replace the old iframe
             iframe.parentNode.replaceChild(newIframe, iframe);
             
-            // Add a small delay to ensure iframe loads, then try to trigger play
-            setTimeout(() => {
-                container.classList.remove('loading');
-                container.classList.add('playing');
-                
-                // Try to programmatically trigger play on mobile
-                try {
-                    newIframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                } catch (e) {
-                    console.log('Could not trigger autoplay, user will need to tap play button');
-                }
-            }, 500);
+            // Mark as playing immediately
+            container.classList.remove('loading');
+            container.classList.add('playing');
         }
 
         // STOP VIDEO
