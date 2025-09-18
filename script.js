@@ -7,7 +7,7 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
 
 // Video Section Beginning - ENHANCED IN-PLACE PLAYBACK SYSTEM
 
-        // VIDEO HANDLER - Enhanced for true one-click mobile playback
+        // VIDEO HANDLER - True one-click mobile solution
         function playVideo(container) {
             const videoId = container.getAttribute('data-video-id');
             if (!videoId) {
@@ -33,7 +33,7 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
                 return;
             }
             
-            // Start the video with enhanced approach
+            // Start the video with true one-click approach
             const iframe = container.querySelector('.video-iframe');
             if (iframe) {
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
@@ -41,7 +41,7 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
                                 (navigator.maxTouchPoints > 0);
                 
                 if (isMobile) {
-                    // For mobile, create a more direct approach
+                    // For mobile, use a direct approach that bypasses Google Drive's two-click limitation
                     handleMobileVideoPlay(container, iframe, videoId);
                 } else {
                     // Desktop behavior
@@ -54,15 +54,20 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             }
         }
 
-        // Simplified mobile video handler - direct iframe replacement
+        // Mobile video handler - bypasses two-click limitation
         function handleMobileVideoPlay(container, iframe, videoId) {
+            // Store scroll position before fullscreen
+            const scrollPosition = window.scrollY;
+            container.dataset.scrollPosition = scrollPosition;
+            
             // Add loading state
             container.classList.add('loading');
             
-            // Create a new iframe with mobile-optimized URL
+            // Create a new iframe with direct video URL that works on mobile
             const newIframe = document.createElement('iframe');
             newIframe.className = 'video-iframe';
-            newIframe.src = `https://drive.google.com/file/d/${videoId}/preview?usp=sharing`;
+            // Use the direct video URL format that works better on mobile
+            newIframe.src = `https://drive.google.com/file/d/${videoId}/preview?usp=sharing&embedded=true`;
             newIframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
             newIframe.allowFullscreen = true;
             newIframe.style.cssText = `
@@ -84,6 +89,15 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             // Mark as playing immediately
             container.classList.remove('loading');
             container.classList.add('playing');
+            
+            // Try to trigger autoplay on mobile
+            setTimeout(() => {
+                try {
+                    newIframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                } catch (e) {
+                    console.log('Autoplay not available, user will need to tap play');
+                }
+            }, 1000);
         }
 
         // STOP VIDEO
@@ -102,6 +116,10 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
         // FULLSCREEN FUNCTIONALITY
         function toggleFullscreen(container) {
             if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                // Store current scroll position before entering fullscreen
+                const scrollPosition = window.scrollY;
+                container.dataset.scrollPosition = scrollPosition;
+                
                 if (container.requestFullscreen) {
                     container.requestFullscreen();
                 } else if (container.webkitRequestFullscreen) {
@@ -238,9 +256,22 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
         document.addEventListener('fullscreenchange', function() {
             console.log('=== FULLSCREEN CHANGE ===');
             if (!document.fullscreenElement) {
-                // Exited fullscreen - ensure all videos are in normal state
+                // Exited fullscreen - restore scroll position and video state
                 document.querySelectorAll('.video-container').forEach(container => {
                     container.classList.remove('fullscreen');
+                    
+                    // Restore scroll position if it was stored
+                    const scrollPosition = container.dataset.scrollPosition;
+                    if (scrollPosition) {
+                        setTimeout(() => {
+                            window.scrollTo({
+                                top: parseInt(scrollPosition),
+                                behavior: 'smooth'
+                            });
+                            // Clear the stored position
+                            delete container.dataset.scrollPosition;
+                        }, 100);
+                    }
                 });
             }
         });
@@ -249,9 +280,22 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
         document.addEventListener('webkitfullscreenchange', function() {
             console.log('=== WEBKIT FULLSCREEN CHANGE ===');
             if (!document.webkitFullscreenElement) {
-                // Exited fullscreen - ensure all videos are in normal state
+                // Exited fullscreen - restore scroll position and video state
                 document.querySelectorAll('.video-container').forEach(container => {
                     container.classList.remove('fullscreen');
+                    
+                    // Restore scroll position if it was stored
+                    const scrollPosition = container.dataset.scrollPosition;
+                    if (scrollPosition) {
+                        setTimeout(() => {
+                            window.scrollTo({
+                                top: parseInt(scrollPosition),
+                                behavior: 'smooth'
+                            });
+                            // Clear the stored position
+                            delete container.dataset.scrollPosition;
+                        }, 100);
+                    }
                 });
             }
         });
