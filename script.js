@@ -98,10 +98,37 @@ const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .s
             const videoContainers = document.querySelectorAll('.video-container');
             
             videoContainers.forEach((container) => {
+                // Handle click events (desktop)
                 container.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     playVideo(container);
+                });
+                
+                // Handle touch events (mobile) - prevent double-tap issue
+                let touchStartTime = 0;
+                let touchEndTime = 0;
+                
+                container.addEventListener('touchstart', function(e) {
+                    touchStartTime = Date.now();
+                    e.preventDefault();
+                }, { passive: false });
+                
+                container.addEventListener('touchend', function(e) {
+                    touchEndTime = Date.now();
+                    const touchDuration = touchEndTime - touchStartTime;
+                    
+                    // Only trigger if it's a quick tap (not a long press or drag)
+                    if (touchDuration < 500) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        playVideo(container);
+                    }
+                }, { passive: false });
+                
+                // Prevent context menu on long press
+                container.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
                 });
             });
             

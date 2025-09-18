@@ -667,6 +667,12 @@ body, html {
             padding: 0;
             border: none;
             border-radius: 20px 20px 0 0;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         /* Poster image styling */
@@ -2428,6 +2434,29 @@ blockquote {
         -webkit-overflow-scrolling: touch;
         scroll-snap-type: x mandatory;
         padding: 0 1rem;
+    }
+    
+    /* Mobile video container improvements */
+    .video-container {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        touch-action: manipulation;
+    }
+    
+    /* Improve touch targets for mobile */
+    .video-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 5;
+        pointer-events: auto;
     }
     
     .class-card {
