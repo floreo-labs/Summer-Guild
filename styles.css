@@ -65,7 +65,7 @@ body, html {
     width: 600px;
     height: 400px;
     margin: 0 auto;
-    overflow: visible;
+    overflow: hidden;
     padding: 50px;
 }
 
@@ -1694,30 +1694,35 @@ blockquote {
     /* Circles container mobile */
     .circles-container {
         width: 100%;
-        max-width: 400px;
-        height: 300px;
+        max-width: 350px;
+        height: 280px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 15px;
+        overflow: hidden;
     }
     
     .draggable-bg {
-        max-width: 200px;
+        max-width: 180px;
     }
     
     .circle-large {
-        min-width: 150px;
+        min-width: 120px !important;
+        max-width: 140px !important;
     }
     
     .circle-medium {
-        min-width: 120px;
+        min-width: 100px !important;
+        max-width: 120px !important;
     }
     
     .circle-small {
-        min-width: 100px;
+        min-width: 80px !important;
+        max-width: 100px !important;
     }
     
     .circle-tiny {
-        min-width: 60px;
+        min-width: 50px !important;
+        max-width: 70px !important;
     }
     
     /* Section headers mobile */
@@ -2018,28 +2023,33 @@ blockquote {
     
     /* Circles small mobile */
     .circles-container {
-        height: 250px;
-        padding: 15px;
+        height: 220px;
+        padding: 10px;
+        max-width: 300px;
     }
     
     .draggable-bg {
-        max-width: 150px;
+        max-width: 120px;
     }
     
     .circle-large {
-        min-width: 120px;
+        min-width: 100px !important;
+        max-width: 120px !important;
     }
     
     .circle-medium {
-        min-width: 100px;
+        min-width: 80px !important;
+        max-width: 100px !important;
     }
     
     .circle-small {
-        min-width: 80px;
+        min-width: 60px !important;
+        max-width: 80px !important;
     }
     
     .circle-tiny {
-        min-width: 50px;
+        min-width: 40px !important;
+        max-width: 60px !important;
     }
     
     /* Section headers small mobile */
@@ -2361,6 +2371,56 @@ blockquote {
     /* Prevent horizontal scrolling */
     body {
         overflow-x: hidden;
+    }
+    
+    /* Hero section mobile optimizations */
+    .hero {
+        overflow: hidden;
+    }
+    
+    .hero-visual {
+        overflow: hidden;
+    }
+    
+    /* Ensure circles don't cause horizontal scroll */
+    .circles-container {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Adjust circle positioning for mobile */
+    .draggable-bg {
+        position: absolute;
+        max-width: none;
+    }
+    
+    /* Reposition circles to stay within mobile bounds */
+    .draggable-bg[style*="left: 80px"] {
+        left: 20px !important;
+    }
+    
+    .draggable-bg[style*="left: 320px"] {
+        left: 180px !important;
+    }
+    
+    .draggable-bg[style*="left: 150px"] {
+        left: 60px !important;
+    }
+    
+    .draggable-bg[style*="left: 380px"] {
+        left: 200px !important;
+    }
+    
+    .draggable-bg[style*="left: 420px"] {
+        left: 220px !important;
+    }
+    
+    .draggable-bg[style*="left: 220px"] {
+        left: 120px !important;
+    }
+    
+    .draggable-bg[style*="left: 540px"] {
+        left: 250px !important;
     }
     
     /* Improve video carousel on mobile */
