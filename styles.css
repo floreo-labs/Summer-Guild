@@ -654,7 +654,7 @@ body, html {
              overflow-y: visible;
              scroll-snap-type: x mandatory;
              gap: 2rem;
-             padding: 2rem 0;
+             padding: 3rem 2rem;
              scroll-behavior: smooth;
          }
 
@@ -676,10 +676,11 @@ body, html {
             flex: 0 0 350px;
             background: white;
             border-radius: 20px;
-            overflow: hidden;
+            overflow: visible;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             scroll-snap-align: start;
+            margin: 1rem 0;
         }
 
          .class-card:hover {
@@ -688,9 +689,6 @@ body, html {
          }
          
          /* Ensure video doesn't get clipped during hover animation */
-         .class-card {
-             overflow: visible;
-         }
 
         .video-container {
             position: relative;
@@ -2599,18 +2597,18 @@ blockquote {
     }
     
      /* Fix mobile animation clipping */
-     .classes {
-         padding: 3rem 0;
-         overflow: hidden;
-     }
-     
-     .classes .container {
-         overflow: hidden;
-     }
+        .classes {
+            padding: 3rem 0;
+            overflow: visible;
+        }
+        
+        .classes .container {
+            overflow: visible;
+        }
      
      .carousel {
          overflow-x: auto;
-         overflow-y: hidden;
+         overflow-y: visible;
          padding-bottom: 1rem;
      }
     
