@@ -345,6 +345,7 @@ body, html {
     border: none;
     padding: 1rem 2rem;
     border-radius: 50px;
+    font-family: 'Messina Sans', sans-serif;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -366,6 +367,7 @@ body, html {
     border: 2px solid #050CFF;
     padding: 1rem 2rem;
     border-radius: 50px;
+    font-family: 'Messina Sans', sans-serif;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -387,6 +389,7 @@ body, html {
     border: none;
     padding: 1rem 2rem;
     border-radius: 50px;
+    font-family: 'Messina Sans', sans-serif;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -1139,7 +1142,7 @@ body, html {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     width: fit-content;
-    max-width: 70%;
+    max-width: 75%;
     min-height: auto;
     display: flex;
     align-items: center;
@@ -1262,15 +1265,6 @@ blockquote {
     animation-delay: -2s;
 }
 
-/* Specific styling for the "I learned to adapt and overcome" quote box */
-.student-brick:has(.emoji-4) {
-    max-width: 45%;
-    padding: 1.5rem 2rem;
-}
-
-.student-brick:has(.emoji-4) .brick-content {
-    padding-right: 1.5rem;
-}
 
 /* Gentle floating animation for emojis */
 @keyframes gentle-float {
@@ -1315,11 +1309,6 @@ blockquote {
         right: -20px;
     }
     
-    /* Mobile styling for the "I learned to adapt and overcome" quote box */
-    .student-brick:has(.emoji-4) {
-        width: 70%;
-        padding: 1.5rem;
-    }
 }
 
 @media (max-width: 480px) {
@@ -1425,6 +1414,7 @@ blockquote {
     text-decoration: none;
     padding: 1rem 2rem;
     border-radius: 50px;
+    font-family: 'Messina Sans', sans-serif;
     font-weight: 600;
     transition: all 0.3s ease;
     font-size: 1rem;
@@ -2323,11 +2313,6 @@ blockquote {
         right: -18px;
     }
     
-    /* Small mobile styling for the "I learned to adapt and overcome" quote box */
-    .student-brick:has(.emoji-4) {
-        width: 75%;
-        padding: 1.2rem;
-    }
     
     /* Creators section small mobile */
     .creator-card {
