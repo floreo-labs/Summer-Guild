@@ -410,6 +410,7 @@ body, html {
     outline: none;
     box-shadow: 0 8px 25px rgba(97, 84, 224, 0.3);
     background: #23C8CE;
+    color: black;
     border-radius: 50px;
     padding: 1rem 2rem;
     font-size: 1rem;
