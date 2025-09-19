@@ -1881,8 +1881,8 @@ blockquote {
         min-height: 100px;
     }
     
-    /* Make "I learned to adapt" quote box match desktop behavior on mobile */
-    .student-brick:has(.emoji-4) {
+    /* Make right-aligned bricks with short content match desktop behavior */
+    .brick-right {
         width: fit-content !important;
         max-width: 75% !important;
     }
@@ -2227,8 +2227,8 @@ blockquote {
         min-height: 80px;
     }
     
-    /* Make "I learned to adapt" quote box match desktop behavior on small mobile */
-    .student-brick:has(.emoji-4) {
+    /* Make right-aligned bricks with short content match desktop behavior on small mobile */
+    .brick-right {
         width: fit-content !important;
         max-width: 75% !important;
     }
