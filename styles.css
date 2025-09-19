@@ -1436,8 +1436,7 @@ blockquote {
     position: relative;
     width: 100%;
     max-width: 600px;
-    height: 0;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 300px;
     overflow: hidden;
     background: #000;
     cursor: pointer;
@@ -1473,43 +1472,6 @@ blockquote {
 }
 
 
-/* Creators video fullscreen button */
-.creators-video .fullscreen-button {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    background: rgba(5, 12, 255, 0.9);
-    color: white;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    opacity: 0;
-    transform: scale(0.8);
-}
-
-.creators-video .video-container:hover .fullscreen-button {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.creators-video .video-container.playing .fullscreen-button {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.creators-video .fullscreen-button:hover {
-    background: #FF532E;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 83, 46, 0.3);
-}
 
 
 /* CTA Section */
@@ -1962,19 +1924,10 @@ blockquote {
 
     /* CHANGE creators video video container deleted*/
 
-    .creators-video .play-button {
-        width: 60px;
-        height: 60px;
-        font-size: 1.5rem;
+    .creators-video .video-container {
+        height: 200px;
     }
     
-    .creators-video .fullscreen-button {
-        width: 35px;
-        height: 35px;
-        font-size: 1rem;
-        top: 10px;
-        left: 10px;
-    }
     
     /* CTA mobile */
     .cta-content h2 {
@@ -2319,19 +2272,10 @@ blockquote {
     
         /* CHANGE creators video video container deleted*/
 
-    .creators-video .play-button {
-        width: 50px;
-        height: 50px;
-        font-size: 1.2rem;
+    .creators-video .video-container {
+        height: 180px;
     }
     
-    .creators-video .fullscreen-button {
-        width: 30px;
-        height: 30px;
-        font-size: 0.9rem;
-        top: 8px;
-        left: 8px;
-    }
     
     /* CTA small mobile */
     .cta-content h2 {
