@@ -2455,6 +2455,10 @@ blockquote {
         left: 20px !important;
     }
     
+    .draggable-bg[style*="left: 500px"] {
+        left: 50px !important;
+    }
+    
     .draggable-bg[style*="left: 540px"] {
         left: 55px !important;
     }
