@@ -384,7 +384,7 @@ body, html {
 }
 
 .btn-cta {
-    background: #6154E0;
+    background: #23C8CE;
     color: white;
     border: none;
     padding: 1rem 2rem;
@@ -1724,7 +1724,7 @@ blockquote {
     
     /* Improve program description on mobile */
     .program-description {
-        text-align: left;
+        text-align: center;
         margin-bottom: 3rem;
     }
     
@@ -1877,6 +1877,14 @@ blockquote {
         width: 90%;
         padding: 2rem;
         min-height: 100px;
+    }
+    
+    /* Make "I learned to adapt" quote box smaller on mobile */
+    .student-brick:has(.emoji-4) {
+        width: 70%;
+        max-width: 250px;
+        padding: 1.5rem;
+        min-height: auto;
     }
     
     .brick-content {
@@ -2217,6 +2225,14 @@ blockquote {
         width: 95%;
         padding: 1.5rem;
         min-height: 80px;
+    }
+    
+    /* Make "I learned to adapt" quote box smaller on small mobile */
+    .student-brick:has(.emoji-4) {
+        width: 75%;
+        max-width: 200px;
+        padding: 1.2rem;
+        min-height: auto;
     }
     
     .brick-content blockquote {
