@@ -1881,12 +1881,10 @@ blockquote {
         min-height: 100px;
     }
     
-    /* Make "I learned to adapt" quote box match others on mobile */
+    /* Make specific quote boxes wider on mobile */
     .student-brick:has(.emoji-4) {
-        width: 90%;
-        max-width: none;
-        padding: 2rem;
-        min-height: 100px;
+        width: 90% !important;
+        max-width: none !important;
     }
     
     .brick-content {
@@ -2229,12 +2227,10 @@ blockquote {
         min-height: 80px;
     }
     
-    /* Make "I learned to adapt" quote box match others on small mobile */
+    /* Make specific quote boxes wider on small mobile */
     .student-brick:has(.emoji-4) {
-        width: 95%;
-        max-width: none;
-        padding: 1.5rem;
-        min-height: 80px;
+        width: 95% !important;
+        max-width: none !important;
     }
     
     .brick-content blockquote {
