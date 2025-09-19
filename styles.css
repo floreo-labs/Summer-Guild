@@ -1079,6 +1079,7 @@ body, html {
     justify-content: center;
     gap: 0.5rem;
     flex-wrap: wrap;
+    margin-bottom: 1.5rem;
 }
 
 .tag {
@@ -1434,14 +1435,15 @@ blockquote {
 .creators-video .video-container {
     position: relative;
     width: 100%;
+    max-width: 600px;
     height: 0;
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
     overflow: hidden;
-    background: #86E791;
+    background: #000;
     cursor: pointer;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     border: none;
 }
@@ -1458,7 +1460,7 @@ blockquote {
     display: block;
     visibility: visible;
     opacity: 1;
-    background: #86E791;
+    background: #000;
     margin: 0;
     padding: 0;
     outline: none;

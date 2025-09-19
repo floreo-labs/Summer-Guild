@@ -606,14 +606,22 @@
                     <p>Hear from Daria and Juanita about their work, experiences, and what drives their passion for tech.</p>
                 </div>
                 
-                <div class="class-card">
-                    <div class="video-container"  data-video-id="1lZd-Vmbnu2yQFnqT_J90QNPgVPFr7lI2">
-                        <!-- Google Drive iframe (visible by default) -->
-                        <iframe class="video-iframe" 
-                                src="https://drive.google.com/file/d/1lZd-Vmbnu2yQFnqT_J90QNPgVPFr7lI2/preview" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen></iframe>
-                    </div>
+                <div class="video-container" data-video-id="1lZd-Vmbnu2yQFnqT_J90QNPgVPFr7lI2">
+                    <!-- Google Drive iframe (visible by default) -->
+                    <iframe class="video-iframe" 
+                            src="https://drive.google.com/file/d/1lZd-Vmbnu2yQFnqT_J90QNPgVPFr7lI2/preview" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    
+                    <!-- Play button overlay -->
+                    <button class="play-button" onclick="playVideo(this.parentElement)">
+                        ▶
+                    </button>
+                    
+                    <!-- Fullscreen button -->
+                    <button class="fullscreen-button" onclick="toggleFullscreen(this.parentElement)">
+                        ⛶
+                    </button>
                 </div>
             </div>
         </div>
